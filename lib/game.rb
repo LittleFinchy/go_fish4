@@ -5,7 +5,15 @@ class Game
     @players = []
   end
 
+  def ready?
+    players.length == 2
+  end
+
   def add_player(player)
     @players.push(player)
+  end
+
+  def turn_player
+    players[0]
   end
 end

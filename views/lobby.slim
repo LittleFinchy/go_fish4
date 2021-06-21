@@ -1,5 +1,5 @@
 h1 Players:
-h3 = "#{game.players.length}/3"
+h3 = "#{game.players.length}/2"
 ul
   - game.players.each do |player|
     li
@@ -8,4 +8,4 @@ ul
       - else
         span = player.name
 
-a.btn href="/#{game.players.length > 2 ? "await_turn" : "lobby"}" Try and Start
+a.btn href="/#{game.ready? ? "await_turn" : "lobby"}" Try and Start

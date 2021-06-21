@@ -30,6 +30,10 @@ class Server < Sinatra::Base
     @@game ||= Game.new
   end
 
+  def self.reset_game
+    @@game = nil
+  end
+
   get "/" do
     slim :index
   end
@@ -51,6 +55,10 @@ class Server < Sinatra::Base
   end
 
   get "/await_turn" do
-    slim :await_turn
+    slim :await_turn, locals: { game: self.class.game, current_player: session[:current_player] }
+  end
+
+  get "/take_turn" do
+    slim :take_turn, locals: { game: self.class.game, current_player: session[:current_player] }
   end
 end

@@ -1,0 +1,6 @@
+h1 Game is underway...
+p Someone else is taking their turn. You will be updated on the round results soon.
+
+- is_current_turn = current_player.name == game.turn_player.name
+
+a.btn href="/#{is_current_turn ? "take_turn" : "await_turn"}" Try and Take Turn
