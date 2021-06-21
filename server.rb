@@ -42,11 +42,15 @@ class Server < Sinatra::Base
     player = Player.new(params["name"])
     session[:current_player] = player
     self.class.game.add_player(player)
-    redirect "/game"
+    redirect "/lobby"
   end
 
-  get "/game" do
+  get "/lobby" do
     redirect "/" if self.class.game.players.empty?
-    slim :game, locals: { game: self.class.game, current_player: session[:current_player] }
+    slim :lobby, locals: { game: self.class.game, current_player: session[:current_player] }
+  end
+
+  get "/await_turn" do
+    slim :await_turn
   end
 end

@@ -1,0 +1,11 @@
+h1 Players:
+h3 = "#{game.players.length}/3"
+ul
+  - game.players.each do |player|
+    li
+      - if player.name == current_player.name
+        strong = player.name
+      - else
+        span = player.name
+
+a.btn href="/#{game.players.length > 2 ? "await_turn" : "lobby"}" Try and Start
