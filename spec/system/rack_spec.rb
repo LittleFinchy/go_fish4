@@ -9,16 +9,14 @@ RSpec.describe Server do
   # include Rack::Test::Methods
   include Capybara::DSL
 
-  def make_sessions_join(num, sessions = [])
-    num.times do |index|
-      player_name = "Player #{index + 1}"
+  def make_sessions_join(num)
+    num.times.map do |index|
       session = Capybara::Session.new(:rack_test, Server.new)
       session.visit "/"
-      session.fill_in :name, with: player_name
+      session.fill_in :name, with: "Player #{index + 1}"
       session.click_on "Join"
-      sessions.push(session)
+      session
     end
-    sessions
   end
 
   def refresh_given_sessions(sessions)
@@ -67,7 +65,7 @@ RSpec.describe Server do
     refresh_given_sessions([session1, session2])
     session1.click_on "Try and Start"
     session1.click_on "Try and Take Turn"
-    session1.click_on "End Turn"
+    session1.click_on "Ask"
     refresh_given_sessions([session1, session2])
     session2.click_on "Try and Start"
     session2.click_on "Try and Take Turn"

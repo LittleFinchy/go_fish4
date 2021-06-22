@@ -1,5 +1,5 @@
 class Game
-  attr_reader :players, :turn_player
+  attr_reader :players, :turn_player, :num_of_players
   attr_accessor :turn_index
 
   def initialize(num_of_players: 2)
@@ -9,7 +9,7 @@ class Game
   end
 
   def ready?
-    players.length == @num_of_players
+    players.length == num_of_players
   end
 
   def add_player(player)

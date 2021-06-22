@@ -1,6 +1,6 @@
 h1.turn-title Your Turn 
 span Pick a card and player...
-form.turn-page-form action='/your_results' method='GET'
+form.turn-page-form action='/end_turn' method='GET'
   .card-view-box
     span = "#{current_player.name}: #{current_player.score} books"
     .card-view
@@ -15,5 +15,3 @@ form.turn-page-form action='/your_results' method='GET'
           li Cards: 5
           li Books: 2
   button.btn.btn--primary.btn-ask type="submit" Ask
-
-a.btn href="/end_turn" End Turn
