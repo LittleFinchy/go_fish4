@@ -7,6 +7,10 @@ class Player
     @hand = []
   end
 
+  def cards_left
+    hand.length
+  end
+
   def take_cards(cards)
     self.hand.concat(cards)
     # check_for_book if hand.length > 0

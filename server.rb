@@ -47,6 +47,7 @@ class Server < Sinatra::Base
 
   get "/lobby" do
     redirect "/" if self.class.game.players.empty?
+    
     slim :lobby, locals: { game: self.class.game, current_player: session[:current_player] }
   end
 

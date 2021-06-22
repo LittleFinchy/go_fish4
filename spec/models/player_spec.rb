@@ -17,6 +17,10 @@ describe("#player") do
     expect(player.hand).to eq []
   end
 
+  it "should tell you how many cards are left in your hand" do
+    expect(player.cards_left).to eq 0
+  end
+
   context "#take_cards" do
     it "can take a card and add it to hand" do
       card = Object.new()

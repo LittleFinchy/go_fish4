@@ -1,5 +1,6 @@
 require "rack/test"
 require "rspec"
+require "pry"
 require "capybara"
 require "capybara/dsl"
 ENV["RACK_ENV"] = "test"
@@ -90,11 +91,19 @@ RSpec.describe Server do
 
   it "shows the turn player cards in their hand" do
     session1, session2 = make_sessions_join(2)
+    turn_player.take_cards([PlayingCard.new("7"), PlayingCard.new("5")])
     refresh_given_sessions([session1, session2])
     session1.click_on "Try and Start"
     session1.click_on "Try and Take Turn"
-    turn_player.take_cards([PlayingCard.new("555")])
     expect(session1).to have_content("#{turn_player.hand.first.rank}")
-    expect(session1).to have_content("555")
+    expect(session1).to have_content("#{turn_player.hand.last.rank}")
+  end
+
+  it "shows the turn player the other players they can pick" do
+    session1, session2 = make_sessions_join(2)
+    refresh_given_sessions([session1, session2])
+    session1.click_on "Try and Start"
+    session1.click_on "Try and Take Turn"
+    expect(session1).to have_content("#{game.players.last.name}")
   end
 end
