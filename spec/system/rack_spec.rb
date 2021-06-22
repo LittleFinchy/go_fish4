@@ -59,7 +59,7 @@ RSpec.describe Server do
     refresh_given_sessions([session1, session2])
     session1.click_on "Try and Start"
     session1.click_on "Try and Take Turn"
-    expect(session1).to have_content("your turn")
+    expect(session1).to have_content("Your Turn")
   end
 
   it "lets player2 take turn after player1" do
@@ -71,6 +71,6 @@ RSpec.describe Server do
     refresh_given_sessions([session1, session2])
     session2.click_on "Try and Start"
     session2.click_on "Try and Take Turn"
-    expect(session2).to have_content("your turn")
+    expect(session2).to have_content("Your Turn")
   end
 end
