@@ -59,14 +59,10 @@ class Server < Sinatra::Base
     slim :take_turn, locals: { game: self.class.game, current_player: session[:current_player] }
   end
 
-  get "/end_turn" do
-    card_picked = params["playingcard"]
-    player_picked = params["playercard"]
-    self.class.game.next_turn
-    redirect "/your_results"
-  end
-
   get "/your_results" do
+    # card_picked = params["playingcard"]
+    # player_picked = params["player"]
+    self.class.game.next_turn
     slim :your_results
   end
 end

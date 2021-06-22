@@ -27,9 +27,19 @@ RSpec.describe Server do
     end
   end
 
-  def session_take_turn(session)
+  def session_start_turn(session)
     session.click_on "Try and Start"
     session.click_on "Try and Take Turn"
+  end
+
+  def session_take_turn(session)
+    session_start_turn(session)
+    pick_first_option(session)
+  end
+
+  def pick_first_option(session)
+    session.choose(id: "card0", name: "playingcard")
+    session.choose(id: "player0", name: "player")
     session.click_on "Ask"
   end
 
@@ -64,8 +74,7 @@ RSpec.describe Server do
   it "lets player1 take turn" do
     session1, session2 = make_sessions_join(2)
     refresh_given_sessions([session1, session2])
-    session1.click_on "Try and Start"
-    session1.click_on "Try and Take Turn"
+    session_start_turn(session1)
     expect(session1).to have_content("Your Turn")
   end
 
@@ -74,16 +83,14 @@ RSpec.describe Server do
     refresh_given_sessions([session1, session2])
     session_take_turn(session1)
     refresh_given_sessions([session1, session2])
-    session2.click_on "Try and Start"
-    session2.click_on "Try and Take Turn"
+    session_start_turn(session2)
     expect(session2).to have_content("Your Turn")
   end
 
   it "shows the turn player how many books they have" do
     session1, session2 = make_sessions_join(2)
     refresh_given_sessions([session1, session2])
-    session1.click_on "Try and Start"
-    session1.click_on "Try and Take Turn"
+    session_start_turn(session1)
     expect(session1).to have_content("#{turn_player.score} books")
   end
 
@@ -94,10 +101,8 @@ RSpec.describe Server do
 
   it "shows the turn player cards in their hand" do
     session1, session2 = make_sessions_join(2)
-    # turn_player.take_cards([PlayingCard.new("7"), PlayingCard.new("5")])
     refresh_given_sessions([session1, session2])
-    session1.click_on "Try and Start"
-    session1.click_on "Try and Take Turn"
+    session_start_turn(session1)
     expect(session1).to have_content("#{turn_player.hand.first.rank}")
     expect(session1).to have_content("#{turn_player.hand.last.rank}")
   end
@@ -105,26 +110,30 @@ RSpec.describe Server do
   it "shows the turn player the other players they can pick" do
     session1, session2 = make_sessions_join(2)
     refresh_given_sessions([session1, session2])
-    session1.click_on "Try and Start"
-    session1.click_on "Try and Take Turn"
+    session_start_turn(session1)
     expect(session1).to have_field("#{game.players.last.name}")
   end
 
   it "shows the turn player the other players they can pick" do
     session1, session2 = make_sessions_join(2)
     refresh_given_sessions([session1, session2])
-    session1.click_on "Try and Start"
-    session1.click_on "Try and Take Turn"
+    session_start_turn(session1)
     expect(session1).to_not have_field("#{turn_player.name}")
+  end
+
+  it "goes to results page after asking" do
+    session1, session2 = make_sessions_join(2)
+    refresh_given_sessions([session1, session2])
+    session_start_turn(session1)
+    pick_first_option(session1)
+    expect(session1).to have_content("result")
   end
 
   it "shows the turn player the results after they pick a card and player to ask" do
     session1, session2 = make_sessions_join(2)
     refresh_given_sessions([session1, session2])
-    session1.click_on "Try and Start"
-    session1.click_on "Try and Take Turn"
-    session1.choose(id: "card0", name: "playingcard")
-    session1.choose(id: "player0", name: "playercard")
-    expect(session1).to have_content("result")
+    session_start_turn(session1)
+    pick_first_option(session1)
+    expect(session1).to have_content("Go Fish #{turn_player.name}")
   end
 end
