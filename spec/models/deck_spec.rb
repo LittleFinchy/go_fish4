@@ -1,5 +1,5 @@
 require "rspec"
-require "../lib/deck"
+require "./lib/deck"
 
 def deal_cards(deck, num)
   cards = []

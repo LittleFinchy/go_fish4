@@ -1,9 +1,11 @@
 class Player
   attr_reader :name, :score, :hand
+  attr_accessor :id
 
   def initialize(name)
     @name = name
     @score = 0
+    @id = id
     @hand = []
   end
 

@@ -1,4 +1,4 @@
-require "../lib/playing_card"
+require "./lib/playing_card"
 
 class Deck
   attr_accessor :cards

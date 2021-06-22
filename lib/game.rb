@@ -1,4 +1,4 @@
-require "../lib/deck"
+require "./lib/deck"
 
 class Game
   attr_reader :players, :turn_player, :num_of_players, :deck
@@ -16,6 +16,7 @@ class Game
   end
 
   def add_player(player)
+    player.id = players.length
     deal(player)
     @players.push(player)
   end

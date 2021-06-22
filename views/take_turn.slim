@@ -5,12 +5,12 @@ form.turn-page-form action='/end_turn' method='GET'
     span = "#{game.turn_player.name}: #{game.turn_player.score} books"
     .card-view
       - game.turn_player.hand.each_with_index do |card, i|
-        input.selectable-card type="radio" id="card#{i}" name="playingcard"
+        input.selectable-card type="radio" id="card#{i}" name="playingcard" value="#{card.rank}"
         label.playing-card for="card#{i}" = card.rank
   .player-view-box
     .player-view
       - game.not_turn_players.each_with_index do |player, i|
-        input.selectable-card type="radio" id="player#{i}" name="playercard"
+        input.selectable-card type="radio" id="player#{i}" name="playercard" value="#{player.id}"
         label.player-card for="player#{i}"
           span = player.name
           ul 

@@ -117,4 +117,14 @@ RSpec.describe Server do
     session1.click_on "Try and Take Turn"
     expect(session1).to_not have_field("#{turn_player.name}")
   end
+
+  it "shows the turn player the results after they pick a card and player to ask" do
+    session1, session2 = make_sessions_join(2)
+    refresh_given_sessions([session1, session2])
+    session1.click_on "Try and Start"
+    session1.click_on "Try and Take Turn"
+    session1.choose(id: "card0", name: "playingcard")
+    session1.choose(id: "player0", name: "playercard")
+    expect(session1).to have_content("result")
+  end
 end

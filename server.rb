@@ -47,7 +47,7 @@ class Server < Sinatra::Base
 
   get "/lobby" do
     redirect "/" if self.class.game.players.empty?
-    
+
     slim :lobby, locals: { game: self.class.game, current_player: session[:current_player] }
   end
 
@@ -60,7 +60,13 @@ class Server < Sinatra::Base
   end
 
   get "/end_turn" do
+    card_picked = params["playingcard"]
+    player_picked = params["playercard"]
     self.class.game.next_turn
-    redirect "/await_turn"
+    redirect "/your_results"
+  end
+
+  get "/your_results" do
+    slim :your_results
   end
 end
