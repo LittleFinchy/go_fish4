@@ -1,5 +1,6 @@
 require "rspec"
 require "../lib/game"
+require "../lib/player"
 
 describe("#game") do
   let(:game) { Game.new() }
@@ -7,7 +8,7 @@ describe("#game") do
   def make_game_with(num)
     game = Game.new(num_of_players: num)
     num.times do |index|
-      game.add_player("Player #{index + 1}")
+      game.add_player(Player.new("Player #{index + 1}"))
     end
     game
   end
@@ -17,7 +18,7 @@ describe("#game") do
   end
 
   it "should be able to add a player" do
-    game.add_player(Object.new())
+    game.add_player(Player.new("Connor"))
     expect(game.players.length).to eq 1
   end
 
@@ -27,8 +28,8 @@ describe("#game") do
   end
 
   it "should be ready to start with 2 players unless otherwise told" do
-    game.add_player(Object.new())
-    game.add_player(Object.new())
+    game.add_player(Player.new("Ben"))
+    game.add_player(Player.new("Mary"))
     expect(game.players.length).to eq 2
     expect(game.ready?).to eq true
   end
@@ -41,12 +42,12 @@ describe("#game") do
 
   it "should keep track of the turn player" do
     game = make_game_with(3)
-    expect(game.turn_player).to eq "Player 1"
+    expect(game.turn_player.name).to eq "Player 1"
     game.next_turn
-    expect(game.turn_player).to eq "Player 2"
+    expect(game.turn_player.name).to eq "Player 2"
     game.next_turn
-    expect(game.turn_player).to eq "Player 3"
+    expect(game.turn_player.name).to eq "Player 3"
     game.next_turn
-    expect(game.turn_player).to eq "Player 1"
+    expect(game.turn_player.name).to eq "Player 1"
   end
 end

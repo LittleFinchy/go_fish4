@@ -87,9 +87,14 @@ RSpec.describe Server do
     expect(session1).to have_content("#{turn_player.score} books")
   end
 
+  it "deals 5 cards at the start of the game" do
+    session1, session2 = make_sessions_join(2)
+    expect(turn_player.cards_left).to eq 5
+  end
+
   it "shows the turn player cards in their hand" do
     session1, session2 = make_sessions_join(2)
-    turn_player.take_cards([PlayingCard.new("7"), PlayingCard.new("5")])
+    # turn_player.take_cards([PlayingCard.new("7"), PlayingCard.new("5")])
     refresh_given_sessions([session1, session2])
     session1.click_on "Try and Start"
     session1.click_on "Try and Take Turn"
