@@ -54,9 +54,7 @@ RSpec.describe Server do
 
   it "allows multiple players to join game" do
     session1, session2 = make_sessions_join(2)
-    expect(session1).to have_content("Players")
     expect(session1).to have_css("strong", text: "Player")
-    expect(session2).to have_content("Players")
     expect(session2).to have_css("strong", text: "Player")
     expect(session2).to have_content("Player 1")
     refresh_given_sessions([session1, session2])
@@ -104,6 +102,14 @@ RSpec.describe Server do
     refresh_given_sessions([session1, session2])
     session1.click_on "Try and Start"
     session1.click_on "Try and Take Turn"
-    expect(session1).to have_content("#{game.players.last.name}")
+    expect(session1).to have_field("#{game.players.last.name}")
+  end
+
+  it "shows the turn player the other players they can pick" do
+    session1, session2 = make_sessions_join(2)
+    refresh_given_sessions([session1, session2])
+    session1.click_on "Try and Start"
+    session1.click_on "Try and Take Turn"
+    expect(session1).to_not have_field("#{turn_player.name}")
   end
 end

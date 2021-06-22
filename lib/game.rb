@@ -20,6 +20,10 @@ class Game
     players[turn_index % players.length]
   end
 
+  def not_turn_players
+    players - [turn_player]
+  end
+
   def next_turn
     self.turn_index += 1
   end

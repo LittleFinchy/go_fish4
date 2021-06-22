@@ -9,7 +9,7 @@ form.turn-page-form action='/end_turn' method='GET'
         label.playing-card for="card#{i}" = card.rank
   .player-view-box
     .player-view
-      - game.players.each_with_index do |player, i|
+      - game.not_turn_players.each_with_index do |player, i|
         input.selectable-card type="radio" id="player#{i}" name="playercard"
         label.player-card for="player#{i}"
           span = player.name
