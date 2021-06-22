@@ -27,7 +27,7 @@ class Server < Sinatra::Base
   end
 
   def self.game
-    @@game ||= Game.new
+    @@game ||= Game.new()
   end
 
   def self.reset_game

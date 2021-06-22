@@ -21,7 +21,7 @@ describe("#game") do
     expect(game.players.length).to eq 1
   end
 
-  it "should be not ready to start without the right number of players" do
+  it "should not be ready to start without the right number of players" do
     expect(game.players.length).to eq 0
     expect(game.ready?).to eq false
   end

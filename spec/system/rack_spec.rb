@@ -4,6 +4,7 @@ require "capybara"
 require "capybara/dsl"
 ENV["RACK_ENV"] = "test"
 require "../server"
+require "../lib/playing_card"
 
 RSpec.describe Server do
   # include Rack::Test::Methods
@@ -30,6 +31,9 @@ RSpec.describe Server do
     session.click_on "Try and Take Turn"
     session.click_on "Ask"
   end
+
+  let(:game) { Server.game }
+  let(:turn_player) { game.turn_player }
 
   before(:each) do
     Capybara.app = Server.new
@@ -74,5 +78,23 @@ RSpec.describe Server do
     session2.click_on "Try and Start"
     session2.click_on "Try and Take Turn"
     expect(session2).to have_content("Your Turn")
+  end
+
+  it "shows the turn player how many books they have" do
+    session1, session2 = make_sessions_join(2)
+    refresh_given_sessions([session1, session2])
+    session1.click_on "Try and Start"
+    session1.click_on "Try and Take Turn"
+    expect(session1).to have_content("#{turn_player.score} books")
+  end
+
+  it "shows the turn player cards in their hand" do
+    session1, session2 = make_sessions_join(2)
+    refresh_given_sessions([session1, session2])
+    session1.click_on "Try and Start"
+    session1.click_on "Try and Take Turn"
+    turn_player.take_cards([PlayingCard.new("555")])
+    expect(session1).to have_content("#{turn_player.hand.first.rank}")
+    expect(session1).to have_content("555")
   end
 end
