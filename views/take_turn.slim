@@ -1,21 +1,19 @@
-.turn-title-box
-  h1.turn-title Your Turn 
-p.turn-under-title Pick a card and player...
-form action='/your_results' method='GET'
-  .turn-page-form
-    .card-view-box
-      span "#{current_player.name}: #{current_player.score} books"
-      .card-view
-        input.selectable-card type="radio" id="card1" name="playingcard"
-        label.playing-card for="card1" K
-    .player-view-box
-      .player-view
-        input.selectable-card type="radio" id="player1" name="playercard"
-        label.player-card for="player1"
-          p Mary
-          ul 
-            li Cards: 5
-            li Books: 2
+h1.turn-title Your Turn 
+span Pick a card and player...
+form.turn-page-form action='/your_results' method='GET'
+  .card-view-box
+    span = "#{current_player.name}: #{current_player.score} books"
+    .card-view
+      input.selectable-card type="radio" id="card1" name="playingcard"
+      label.playing-card for="card1" K
+  .player-view-box
+    .player-view
+      input.selectable-card type="radio" id="player1" name="playercard"
+      label.player-card for="player1"
+        p Mary
+        ul 
+          li Cards: 5
+          li Books: 2
   button.btn.btn--primary.btn-ask type="submit" Ask
 
 a.btn href="/end_turn" End Turn
