@@ -1,8 +1,10 @@
 class Game
-  attr_reader :players
+  attr_reader :players, :turn_player
+  attr_accessor :turn_index
 
   def initialize
     @players = []
+    @turn_index = 0
   end
 
   def ready?
@@ -14,6 +16,10 @@ class Game
   end
 
   def turn_player
-    players[0]
+    players[turn_index % players.length]
+  end
+
+  def next_turn
+    self.turn_index += 1
   end
 end

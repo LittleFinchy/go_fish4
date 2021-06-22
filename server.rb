@@ -38,10 +38,6 @@ class Server < Sinatra::Base
     slim :index
   end
 
-  # get "/:slug" do
-  #   slim params[:slug].to_sym
-  # end
-
   post "/join" do
     player = Player.new(params["name"])
     session[:current_player] = player
@@ -60,5 +56,10 @@ class Server < Sinatra::Base
 
   get "/take_turn" do
     slim :take_turn, locals: { game: self.class.game, current_player: session[:current_player] }
+  end
+
+  get "/end_turn" do
+    self.class.game.next_turn
+    redirect "/await_turn"
   end
 end
