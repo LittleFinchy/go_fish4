@@ -25,6 +25,12 @@ RSpec.describe Server do
     end
   end
 
+  def session_take_turn(session)
+    session.click_on "Try and Start"
+    session.click_on "Try and Take Turn"
+    session.click_on "Ask"
+  end
+
   before(:each) do
     Capybara.app = Server.new
   end
@@ -63,9 +69,7 @@ RSpec.describe Server do
   it "lets player2 take turn after player1" do
     session1, session2 = make_sessions_join(2)
     refresh_given_sessions([session1, session2])
-    session1.click_on "Try and Start"
-    session1.click_on "Try and Take Turn"
-    session1.click_on "Ask"
+    session_take_turn(session1)
     refresh_given_sessions([session1, session2])
     session2.click_on "Try and Start"
     session2.click_on "Try and Take Turn"
