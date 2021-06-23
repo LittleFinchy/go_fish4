@@ -43,22 +43,27 @@ RSpec.describe Server do
     session.click_on "Ask"
   end
 
-  def reset_and_give_cards(cards)
+  def reset_hands
     game.players.each do |player|
       player.hand = []
+    end
+  end
+
+  def give_cards(cards)
+    game.players.each do |player|
       player.take_cards(cards)
     end
   end
 
   def choose_correct_card(session)
-    reset_and_give_cards([PlayingCard.new("A")])
+    reset_hands
+    give_cards([PlayingCard.new("A")])
     refresh_given_sessions([session])
     pick_first_option(session)
   end
 
   def choose_incorrect_card(session)
-    # reset_and_give_cards([PlayingCard.new("A")])
-    # game.players.last.hand = []
+    reset_hands
     turn_player.take_cards([PlayingCard.new("A")])
     refresh_given_sessions([session])
     pick_first_option(session)
@@ -142,7 +147,6 @@ RSpec.describe Server do
 
   it "goes to results page after asking" do
     session1, session2 = make_sessions_join(2)
-    refresh_given_sessions([session1, session2])
     session_start_turn(session1)
     pick_first_option(session1)
     expect(session1).to have_content("You asked")
@@ -160,5 +164,16 @@ RSpec.describe Server do
     session_start_turn(session1)
     choose_correct_card(session1)
     expect(session1).to have_content("received 1")
+  end
+
+  it "draws a card from the deck if you didnt fish a card" do
+    session1, session2 = make_sessions_join(2)
+    session_start_turn(session1)
+    choose_incorrect_card(session1)
+    expect(turn_player.hand.length).to eq 2
+    expect(game.deck.cards_left).to eq 41
+  end
+
+  xit "lets you go again if you fished a card" do
   end
 end

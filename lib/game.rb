@@ -41,4 +41,12 @@ class Game
   def find_player_by_id(id)
     players.find { |player| player.id == id }
   end
+
+  def play_turn(asked_player, asked_rank)
+    num_of_cards_won = turn_player.ask(asked_player, asked_rank)
+    if num_of_cards_won == 0 && deck.cards_left > 0
+      turn_player.take_cards([deck.deal])
+    end
+    num_of_cards_won
+  end
 end
