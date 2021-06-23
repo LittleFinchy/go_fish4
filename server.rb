@@ -70,9 +70,9 @@ class Server < Sinatra::Base
   end
 
   get "/your_results" do
-    # card_picked = params["playingcard"]
-    # player_picked = params["player"]
+    card_picked = params["playingcard"]
+    player_picked = params["player"]
     self.class.game.next_turn
-    slim :your_results
+    slim :your_results, locals: { player_picked: player_picked, card_picked: card_picked, current_player: session[:current_player] }
   end
 end

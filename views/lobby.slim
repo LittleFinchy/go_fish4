@@ -3,7 +3,7 @@ h3 = "#{game.players.length}/#{game.num_of_players}"
 ul
   - game.players.each do |player|
     li
-      - if player.name == current_player.name
+      - if player.id == current_player.id
         strong = player.name
       - else
         span = player.name

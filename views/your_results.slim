@@ -1,8 +1,8 @@
 .your-results-title-box
-  h1.your-results-title You asked Mary for
+  h1.your-results-title You asked #{player_picked} for
 .card-display
-  p.playing-card.large-card K
+  p.playing-card.large-card #{card_picked}
 .your-results-footer-box
-  h1.your-results-footer Go Fish Stephen!
+  h1.your-results-footer Go Fish #{current_player.name}!
 / a.btn.btn--primary.link-to-lobby href="/all_results" Continue
 a.btn href="/await_turn" Continue

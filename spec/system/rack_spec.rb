@@ -43,6 +43,31 @@ RSpec.describe Server do
     session.click_on "Ask"
   end
 
+  def reset_and_give_cards(cards)
+    game.players.each do |player|
+      player.hand = []
+      player.take_cards(cards)
+    end
+  end
+
+  def choose_correct_card(session)
+    reset_and_give_cards([Card.new("ace")])
+    refresh_session(session)
+    session.choose(id: "card0", name: "rank")
+    session.choose(id: "player1", name: "player")
+    session.click_on "Ask"
+  end
+
+  def choose_incorrect_card(session)
+    reset_and_give_cards([Card.new("ace")])
+    turn_player.take_cards([Card.new("king")])
+    refresh_session(session)
+    session.choose(id: "card1", name: "rank")
+    session.choose(id: "player1", name: "player")
+    session.click_on "Ask"
+  end
+
+
   let(:game) { Server.game }
   let(:turn_player) { game.turn_player }
 
@@ -80,11 +105,8 @@ RSpec.describe Server do
 
   it "lets player2 take turn after player1" do
     session1, session2 = make_sessions_join(2)
-    # refresh_given_sessions([session1, session2])
     session_take_turn(session1)
-    refresh_given_sessions([session1, session2])
     session_start_turn(session2)
-    session2.click_on "Try and Take Turn"
     expect(session2).to have_content("Your Turn")
   end
 
@@ -127,7 +149,7 @@ RSpec.describe Server do
     refresh_given_sessions([session1, session2])
     session_start_turn(session1)
     pick_first_option(session1)
-    expect(session1).to have_content("result")
+    expect(session1).to have_content("You asked")
   end
 
   it "shows the turn player the results after they pick a card and player to ask" do
@@ -135,6 +157,6 @@ RSpec.describe Server do
     refresh_given_sessions([session1, session2])
     session_start_turn(session1)
     pick_first_option(session1)
-    expect(session1).to have_content("Go Fish #{turn_player.name}")
+    expect(session1).to have_content("Go Fish")
   end
 end
