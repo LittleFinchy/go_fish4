@@ -29,6 +29,6 @@ describe("#deck") do
     cards.each do |card|
       ranks.push(card.rank)
     end
-    expect(ranks.uniq.length).to eq 13
+    expect(ranks.uniq.length).to eq 12
   end
 end

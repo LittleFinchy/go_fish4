@@ -1,3 +1,5 @@
+# require "pusher"
+require "pry"
 require "sinatra"
 require "sinatra/reloader"
 require "sprockets"
@@ -47,16 +49,24 @@ class Server < Sinatra::Base
 
   get "/lobby" do
     redirect "/" if self.class.game.players.empty?
-
     slim :lobby, locals: { game: self.class.game, current_player: session[:current_player] }
   end
 
   get "/await_turn" do
-    slim :await_turn, locals: { game: self.class.game, current_player: session[:current_player] }
+    if self.class.game.ready?
+      slim :await_turn, locals: { game: self.class.game, current_player: session[:current_player] }
+    else
+      redirect "/lobby"
+    end
   end
 
   get "/take_turn" do
-    slim :take_turn, locals: { game: self.class.game, current_player: session[:current_player] }
+    is_your_turn = session[:current_player].id == self.class.game.turn_player.id
+    if is_your_turn
+      slim :take_turn, locals: { game: self.class.game, current_player: session[:current_player] }
+    else
+      redirect "/await_turn"
+    end
   end
 
   get "/your_results" do

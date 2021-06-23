@@ -1,5 +1,5 @@
 h1 Players:
-h3 = "#{game.players.length}/2"
+h3 = "#{game.players.length}/#{game.num_of_players}"
 ul
   - game.players.each do |player|
     li
@@ -8,6 +8,4 @@ ul
       - else
         span = player.name
 
-a.btn href="/#{game.ready? ? "await_turn" : "lobby"}" Try and Start
-
-/ put route into server.rb
+a.btn href="/await_turn" Try and Start

@@ -23,7 +23,7 @@ RSpec.describe Server do
 
   def refresh_given_sessions(sessions)
     sessions.each do |session|
-      session.driver.refresh
+      session.visit(session.current_url)
     end
   end
 
@@ -80,10 +80,11 @@ RSpec.describe Server do
 
   it "lets player2 take turn after player1" do
     session1, session2 = make_sessions_join(2)
-    refresh_given_sessions([session1, session2])
+    # refresh_given_sessions([session1, session2])
     session_take_turn(session1)
     refresh_given_sessions([session1, session2])
     session_start_turn(session2)
+    session2.click_on "Try and Take Turn"
     expect(session2).to have_content("Your Turn")
   end
 
@@ -103,8 +104,8 @@ RSpec.describe Server do
     session1, session2 = make_sessions_join(2)
     refresh_given_sessions([session1, session2])
     session_start_turn(session1)
-    expect(session1).to have_content("#{turn_player.hand.first.rank}")
-    expect(session1).to have_content("#{turn_player.hand.last.rank}")
+    expect(session1).to have_field("#{turn_player.hand.first.rank}")
+    expect(session1).to have_field("#{turn_player.hand.last.rank}")
   end
 
   it "shows the turn player the other players they can pick" do
