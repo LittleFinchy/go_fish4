@@ -7,6 +7,7 @@ class Player
     @score = 0
     @id = 0
     @hand = []
+    @score = 0
   end
 
   def cards_left
@@ -39,7 +40,7 @@ class Player
   def search_for_rank(rank)
     matching = hand.select { |card| card.rank == rank }
     if matching.length == 4
-      self.books += 1
+      self.score += 1
       self.hand -= matching
     end
   end

@@ -176,4 +176,7 @@ RSpec.describe Server do
 
   xit "lets you go again if you fished a card" do
   end
+
+  xit "makes a book if you can" do
+  end
 end
