@@ -39,7 +39,7 @@ RSpec.describe Server do
 
   def pick_first_option(session)
     session.choose(id: "card0", name: "playingcard")
-    session.choose(id: "player0", name: "player")
+    session.choose(id: "player0", name: "player_id")
     session.click_on "Ask"
   end
 
@@ -51,22 +51,18 @@ RSpec.describe Server do
   end
 
   def choose_correct_card(session)
-    reset_and_give_cards([Card.new("ace")])
-    refresh_session(session)
-    session.choose(id: "card0", name: "rank")
-    session.choose(id: "player1", name: "player")
-    session.click_on "Ask"
+    reset_and_give_cards([PlayingCard.new("A")])
+    refresh_given_sessions([session])
+    pick_first_option(session)
   end
 
   def choose_incorrect_card(session)
-    reset_and_give_cards([Card.new("ace")])
-    turn_player.take_cards([Card.new("king")])
-    refresh_session(session)
-    session.choose(id: "card1", name: "rank")
-    session.choose(id: "player1", name: "player")
-    session.click_on "Ask"
+    # reset_and_give_cards([PlayingCard.new("A")])
+    # game.players.last.hand = []
+    turn_player.take_cards([PlayingCard.new("A")])
+    refresh_given_sessions([session])
+    pick_first_option(session)
   end
-
 
   let(:game) { Server.game }
   let(:turn_player) { game.turn_player }
@@ -152,11 +148,17 @@ RSpec.describe Server do
     expect(session1).to have_content("You asked")
   end
 
-  it "shows the turn player the results after they pick a card and player to ask" do
+  it "tells the turn player to Go Fish if they didnt get a card back" do
     session1, session2 = make_sessions_join(2)
-    refresh_given_sessions([session1, session2])
     session_start_turn(session1)
-    pick_first_option(session1)
+    choose_incorrect_card(session1)
     expect(session1).to have_content("Go Fish")
+  end
+
+  it "tells the turn player how many cards they fished if they ask for a correct card" do
+    session1, session2 = make_sessions_join(2)
+    session_start_turn(session1)
+    choose_correct_card(session1)
+    expect(session1).to have_content("received 1")
   end
 end

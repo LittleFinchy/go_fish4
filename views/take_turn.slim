@@ -10,7 +10,7 @@ form.turn-page-form action='/your_results' method='GET'
   .player-view-box
     .player-view
       - game.not_turn_players.each_with_index do |player, i|
-        input.selectable-card type="radio" id="player#{i}" name="player" value="#{player.id}"
+        input.selectable-card type="radio" id="player#{i}" name="player_id" value="#{player.id}"
         label.player-card for="player#{i}"
           span = player.name
           ul 

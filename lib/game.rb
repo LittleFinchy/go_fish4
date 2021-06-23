@@ -37,4 +37,8 @@ class Game
   def next_turn
     self.turn_index += 1
   end
+
+  def find_player_by_id(id)
+    players.find { |player| player.id == id }
+  end
 end

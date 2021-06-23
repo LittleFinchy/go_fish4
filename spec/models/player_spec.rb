@@ -1,6 +1,6 @@
 require "rspec"
 require "../lib/player"
-# require "../lib/card"
+require "../lib/playing_card"
 
 describe("#player") do
   let(:player) { Player.new("Joe") }
@@ -23,14 +23,14 @@ describe("#player") do
 
   context "#take_cards" do
     it "can take a card and add it to hand" do
-      card = Object.new()
+      card = PlayingCard.new("5")
       player.take_cards([card])
       expect(player.hand.include?(card)).to eq true
     end
 
     it "can take two cards and add them to hand" do
-      card1 = Object.new()
-      card2 = Object.new()
+      card1 = PlayingCard.new("4")
+      card2 = PlayingCard.new("2")
       player.take_cards([card1, card2])
       expect(player.hand.length).to eq 2
     end

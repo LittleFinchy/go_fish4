@@ -1,0 +1,13 @@
+// Enable pusher logging - don't include this in production
+Pusher.logToConsole = true;
+
+const pusher = new Pusher('6440facb664c305448af', {
+  cluster: 'us2'
+});
+
+const channel = pusher.subscribe('go-fish');
+channel.bind('game-changed', function(data) {
+  if (window.location.pathname === '/lobby') {
+  window.location.reload();
+  }
+});

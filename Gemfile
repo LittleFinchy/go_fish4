@@ -5,6 +5,7 @@ gem "slim"
 gem "sprockets"
 gem "sass"
 gem "pry"
+gem "pusher"
 
 group :test do
   gem "rspec"

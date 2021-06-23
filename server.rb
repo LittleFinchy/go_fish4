@@ -1,4 +1,4 @@
-# require "pusher"
+require "pusher"
 require "pry"
 require "sinatra"
 require "sinatra/reloader"
@@ -11,6 +11,16 @@ class Server < Sinatra::Base
     register Sinatra::Reloader
   end
   enable :sessions
+
+  def pusher
+    @pusher ||= Pusher::Client.new(
+      app_id: "1224238",
+      key: "6440facb664c305448af",
+      secret: "e18ac9f53cae9f092b9d",
+      cluster: "us2",
+      use_tls: true,
+    )
+  end
 
   # initialize new sprockets environment
   set :environment, Sprockets::Environment.new
@@ -44,6 +54,7 @@ class Server < Sinatra::Base
     player = Player.new(params["name"])
     session[:current_player] = player
     self.class.game.add_player(player)
+    pusher.trigger("go-fish", "game-changed", { id: player.id })
     redirect "/lobby"
   end
 
@@ -70,9 +81,11 @@ class Server < Sinatra::Base
   end
 
   get "/your_results" do
-    card_picked = params["playingcard"]
-    player_picked = params["player"]
+    rank_picked = params["playingcard"]
+    player_id_picked = params["player_id"].to_i
+    player_picked = self.class.game.find_player_by_id(player_id_picked)
+    num_of_cards_taken = self.class.game.turn_player.ask(player_picked, rank_picked)
     self.class.game.next_turn
-    slim :your_results, locals: { player_picked: player_picked, card_picked: card_picked, current_player: session[:current_player] }
+    slim :your_results, locals: { player_picked: player_picked, rank_picked: rank_picked, num_of_cards_taken: num_of_cards_taken, current_player: session[:current_player] }
   end
 end
