@@ -148,6 +148,12 @@ RSpec.describe Server do
     expect(turn_player.cards_left).to eq 5
   end
 
+  it "players hand while waiting for turn" do
+    session1, session2 = make_sessions_join(2)
+    give_cards([PlayingCard.new("4")])
+    expect(session1).to have_content("4")
+  end
+
   it "shows the turn player cards in their hand" do
     session1, session2 = make_sessions_join(2)
     refresh_given_sessions([session1, session2])
@@ -232,19 +238,19 @@ RSpec.describe Server do
     expect(session2).to have_content("received")
   end
 
-  xit "only shows results from the last 5 turns" do
-    session1, session2 = make_sessions_join(2)
-    session_complete_incorrect_turn(session1)
-    # binding.pry
-    session_complete_incorrect_turn(session2)
-    session_complete_incorrect_turn(session1)
-    refresh_given_sessions([session1, session2])
-    session_complete_incorrect_turn(session2)
-    expect(session2).to have_content("3: Player 2")
+  xit "shows 5 results" do
   end
 
   context "pusher tests" do
     it "uses JS to refresh the page", :js do
+      session1, session2 = make_sessions_join(2, true)
+      expect(session2).to have_content("Players")
+      expect(session2).to have_content("Player 2")
+      expect(session1).to have_content("Players")
+      expect(session1).to have_content("Player 2")
+    end
+
+    it "uses JS to play 6 rounds", :js do
       session1, session2 = make_sessions_join(2, true)
       expect(session2).to have_content("Players")
       expect(session2).to have_content("Player 2")

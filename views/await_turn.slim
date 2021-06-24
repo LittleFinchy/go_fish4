@@ -1,4 +1,8 @@
 h1 Game is underway...
+ul
+  - current_player.hand.each do |card|
+    li = card.rank
+
 p #{game.turn_player.name} is taking their turn. You will be updated on the round results soon.
 
 - if game.results.length > 1
@@ -9,3 +13,4 @@ p #{game.turn_player.name} is taking their turn. You will be updated on the roun
 - if current_player.id == game.turn_player.id
   a.btn href="/take_turn" Take Turn
 
+/ use .any? AFTER i write the test ;)

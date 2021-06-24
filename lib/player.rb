@@ -23,6 +23,11 @@ class Player
   def take_cards(cards)
     self.hand.concat(cards)
     check_for_book if hand.length > 0
+    sort_hand
+  end
+
+  def sort_hand
+    hand.sort_by! { |card| card.value }
   end
 
   def remove_cards(rank)
