@@ -30,8 +30,9 @@ RSpec.describe Server do
   end
 
   def session_start_turn(session)
+    refresh_given_sessions([session])
     session.click_on "Start"
-    session.click_on "Try and Take Turn"
+    session.click_on "Take Turn"
   end
 
   def session_take_turn(session)
@@ -109,7 +110,6 @@ RSpec.describe Server do
 
   it "lets player2 take turn after player1" do
     session1, session2 = make_sessions_join(2)
-    # binding.pry
     session_start_turn(session1)
     choose_incorrect_card(session1)
     session_start_turn(session2)
@@ -202,10 +202,13 @@ RSpec.describe Server do
     expect(session1).to have_content("Your Turn")
   end
 
-  it "shows all results after someone takes a turn" do
+  it "shows results of last turn to other players" do
     session1, session2 = make_sessions_join(2)
     session_start_turn(session1)
     choose_incorrect_card(session1)
+    session2.click_on("Start")
+    refresh_given_sessions([session1, session2])
+    expect(session2).to have_content("Go Fish Player 1")
   end
 
   xcontext "pusher tests" do

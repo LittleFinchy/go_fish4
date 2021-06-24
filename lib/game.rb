@@ -2,13 +2,14 @@ require "./lib/deck"
 
 class Game
   attr_reader :players, :turn_player, :num_of_players, :deck
-  attr_accessor :turn_index
+  attr_accessor :turn_index, :results
 
   def initialize(num_of_players: 2)
     @players = []
     @turn_index = 0
     @num_of_players = num_of_players
     @deck = Deck.new()
+    @results = []
   end
 
   def ready?
@@ -48,5 +49,9 @@ class Game
       turn_player.take_cards([deck.deal])
     end
     num_of_cards_won
+  end
+
+  def previous_results
+    results
   end
 end

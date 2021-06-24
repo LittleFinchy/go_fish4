@@ -10,7 +10,7 @@ channel.bind('game-changed', function(data) {
   if (window.location.pathname === '/lobby') {
   window.location.reload();
   }
-  if (window.location.pathname === '/take_turn') {
-    window.location.reload();
-    }
+  if (window.location.pathname === '/await_turn') {
+  window.location.reload();
+  }
 });

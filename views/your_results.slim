@@ -5,11 +5,12 @@
 .your-results-footer-box
   h1.your-results-footer 
     - if num_of_cards_taken > 0
+      - game.results.push("#{current_player.name} asked #{player_picked.name} for #{rank_picked} and received #{num_of_cards_taken}")
       = "#{current_player.name} received #{num_of_cards_taken}"
       a.btn href="/take_turn" Go Again
     - else 
+      - game.results.push("#{current_player.name} asked #{player_picked.name} for #{rank_picked}. Go Fish #{current_player.name}")
       - game.next_turn
       = "Go Fish #{current_player.name}!"
       a.btn href="/await_turn" Continue
 
-/ a.btn href="/await_turn" Continue

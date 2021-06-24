@@ -1,4 +1,11 @@
 h1 Game is underway...
-p Someone else is taking their turn. You will be updated on the round results soon.
+p #{game.turn_player.name} is taking their turn. You will be updated on the round results soon.
 
-a.btn href="/take_turn" Try and Take Turn
+- if game.results.length > 1
+  ul
+    - game.previous_results.each do |result|
+      li = result
+
+- if current_player.id == game.turn_player.id
+  a.btn href="/take_turn" Take Turn
+
