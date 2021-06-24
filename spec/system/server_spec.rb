@@ -30,7 +30,7 @@ RSpec.describe Server do
   end
 
   def session_start_turn(session)
-    session.click_on "Try and Start"
+    session.click_on "Start"
     session.click_on "Try and Take Turn"
   end
 
@@ -109,16 +109,26 @@ RSpec.describe Server do
 
   it "lets player2 take turn after player1" do
     session1, session2 = make_sessions_join(2)
-    session_take_turn(session1)
+    # binding.pry
+    session_start_turn(session1)
+    choose_incorrect_card(session1)
     session_start_turn(session2)
     expect(session2).to have_content("Your Turn")
   end
 
-  it "shows the turn player how many books they have" do
+  it "shows the turn player that they have 0 books at the start" do
     session1, session2 = make_sessions_join(2)
     refresh_given_sessions([session1, session2])
     session_start_turn(session1)
-    expect(session1).to have_content("#{turn_player.score} books")
+    expect(session1).to have_content("0 books")
+  end
+
+  it "shows the turn player how many books they have" do
+    session1, session2 = make_sessions_join(2)
+    reset_hands
+    game.turn_player.take_cards([PlayingCard.new("K"), PlayingCard.new("K"), PlayingCard.new("K"), PlayingCard.new("K")])
+    session_start_turn(session1)
+    expect(session1).to have_content("1 books")
   end
 
   it "deals 5 cards at the start of the game" do
@@ -169,6 +179,13 @@ RSpec.describe Server do
     expect(session1).to have_content("received 1")
   end
 
+  it "removes cards from other players hand if they were fished" do
+    session1, session2 = make_sessions_join(2)
+    session_start_turn(session1)
+    choose_correct_card(session1)
+    expect(game.players.last.hand).to eq []
+  end
+
   it "draws a card from the deck if you didnt fish a card" do
     session1, session2 = make_sessions_join(2)
     session_start_turn(session1)
@@ -177,18 +194,21 @@ RSpec.describe Server do
     expect(game.deck.cards_left).to eq 41
   end
 
-  xit "lets you go again if you fished a card" do
+  it "lets you go again if you fished a card" do
     session1, session2 = make_sessions_join(2)
     session_start_turn(session1)
     choose_correct_card(session1)
-    session1.click_on "Continue"
+    session1.click_on "Go Again"
     expect(session1).to have_content("Your Turn")
   end
 
-  xit "makes a book if you can" do
+  it "shows all results after someone takes a turn" do
+    session1, session2 = make_sessions_join(2)
+    session_start_turn(session1)
+    choose_incorrect_card(session1)
   end
 
-  context "pusher tests" do
+  xcontext "pusher tests" do
     it "uses JS to refresh the page", :js do
       session1, session2 = make_sessions_join(2, true)
       expect(session2).to have_content("Players")

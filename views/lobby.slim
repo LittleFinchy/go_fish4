@@ -7,5 +7,5 @@ ul
         strong = player.name
       - else
         span = player.name
-
-a.btn href="/await_turn" Try and Start
+- if game.players.length == game.num_of_players
+  a.btn href="/await_turn" Start

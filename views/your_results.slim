@@ -6,7 +6,10 @@
   h1.your-results-footer 
     - if num_of_cards_taken > 0
       = "#{current_player.name} received #{num_of_cards_taken}"
+      a.btn href="/take_turn" Go Again
     - else 
+      - game.next_turn
       = "Go Fish #{current_player.name}!"
+      a.btn href="/await_turn" Continue
 
-a.btn href="/await_turn" Continue
+/ a.btn href="/await_turn" Continue

@@ -85,7 +85,6 @@ class Server < Sinatra::Base
     player_id_picked = params["player_id"].to_i
     player_picked = self.class.game.find_player_by_id(player_id_picked)
     num_of_cards_taken = self.class.game.play_turn(player_picked, rank_picked)
-    self.class.game.next_turn
-    slim :your_results, locals: { player_picked: player_picked, rank_picked: rank_picked, num_of_cards_taken: num_of_cards_taken, current_player: session[:current_player] }
+    slim :your_results, locals: { player_picked: player_picked, rank_picked: rank_picked, num_of_cards_taken: num_of_cards_taken, game: self.class.game, current_player: session[:current_player] }
   end
 end
