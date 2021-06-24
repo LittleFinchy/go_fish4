@@ -1,6 +1,8 @@
 require "rack/test"
 require "rspec"
 require "pry"
+require "selenium/webdriver"
+require "webdrivers/chromedriver"
 require "capybara"
 require "capybara/dsl"
 ENV["RACK_ENV"] = "test"
@@ -11,9 +13,9 @@ RSpec.describe Server do
   # include Rack::Test::Methods
   include Capybara::DSL
 
-  def make_sessions_join(num)
+  def make_sessions_join(num, selenium = false)
     num.times.map do |index|
-      session = Capybara::Session.new(:rack_test, Server.new)
+      session = selenium ? Capybara::Session.new(:selenium_chrome_headless, Server.new) : Capybara::Session.new(:rack_test, Server.new)
       session.visit "/"
       session.fill_in :name, with: "Player #{index + 1}"
       session.click_on "Join"
@@ -74,6 +76,7 @@ RSpec.describe Server do
 
   before(:each) do
     Capybara.app = Server.new
+    Capybara.server = :webrick
   end
 
   after(:each) do
@@ -175,8 +178,23 @@ RSpec.describe Server do
   end
 
   xit "lets you go again if you fished a card" do
+    session1, session2 = make_sessions_join(2)
+    session_start_turn(session1)
+    choose_correct_card(session1)
+    session1.click_on "Continue"
+    expect(session1).to have_content("Your Turn")
   end
 
   xit "makes a book if you can" do
+  end
+
+  context "pusher tests" do
+    it "uses JS to refresh the page", :js do
+      session1, session2 = make_sessions_join(2, true)
+      expect(session2).to have_content("Players")
+      expect(session2).to have_content("Player 2")
+      expect(session1).to have_content("Players")
+      expect(session1).to have_content("Player 2")
+    end
   end
 end
