@@ -150,8 +150,9 @@ RSpec.describe Server do
 
   it "players hand while waiting for turn" do
     session1, session2 = make_sessions_join(2)
-    give_cards([PlayingCard.new("4")])
-    expect(session1).to have_content("4")
+    refresh_given_sessions([session1, session2])
+    session1.click_on("Start")
+    expect(session1).to have_content(turn_player.hand.first.rank)
   end
 
   it "shows the turn player cards in their hand" do
@@ -238,18 +239,30 @@ RSpec.describe Server do
     expect(session2).to have_content("received")
   end
 
-  xit "shows 5 results" do
-  end
-
-  xcontext "pusher tests" do
+  context "pusher tests" do
     def play_first_turn(session)
       session.click_on "Start"
       play_next_turn(session)
     end
 
     def play_next_turn(session)
-      session.click_on "Take Turn"
+      if session.has_content?("Take Turn")
+        session.click_on "Take Turn"
+      else
+        refresh_given_sessions([session])
+        play_next_turn(session)
+      end
+      play_and_choose(session)
+    end
+
+    def play_and_choose(session)
       pick_first_option(session)
+      if session.has_content?("Continue")
+        session.click_on "Continue"
+      else
+        session.click_on "Go Again"
+        play_and_choose(session)
+      end
     end
 
     def pick_first_option(session)
@@ -258,21 +271,13 @@ RSpec.describe Server do
       session.click_on "Ask"
     end
 
-    def set_round
-      reset_hands
-      game.players[0].take_cards([PlayingCard.new("J")])
-      game.players[0].take_cards([PlayingCard.new("K")])
-      # refresh_given_sessions([session1, session2])
-    end
-
-    def play_6_rounds(session1, session2)
-      set_round
+    def play_rounds(num, session1, session2)
       play_first_turn(session1)
       play_first_turn(session2)
-      play_next_turn(session1)
-      play_next_turn(session2)
-      play_next_turn(session1)
-      play_next_turn(session2)
+      (num - 2).times do
+        play_next_turn(session1)
+        play_next_turn(session2)
+      end
     end
 
     xit "uses JS to refresh the page", :js do
@@ -285,9 +290,8 @@ RSpec.describe Server do
 
     it "uses JS to play 6 rounds", :js do
       session1, session2 = make_sessions_join(2, true)
-      play_6_rounds(session1, session2)
-      binding.pry
-      expect(true).to eq true
+      play_rounds(5, session1, session2)
+      expect(session1).to have_content("Round 5:")
     end
   end
 end
