@@ -52,6 +52,9 @@ class Game
   end
 
   def previous_results
+    until results.length <= 5
+      results.shift
+    end
     results
   end
 end

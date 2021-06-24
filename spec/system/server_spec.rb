@@ -15,7 +15,7 @@ RSpec.describe Server do
 
   def make_sessions_join(num, selenium = false)
     num.times.map do |index|
-      session = selenium ? Capybara::Session.new(:selenium_chrome_headless, Server.new) : Capybara::Session.new(:rack_test, Server.new)
+      session = selenium ? Capybara::Session.new(:selenium_chrome, Server.new) : Capybara::Session.new(:rack_test, Server.new)
       session.visit "/"
       session.fill_in :name, with: "Player #{index + 1}"
       session.click_on "Join"
@@ -76,6 +76,12 @@ RSpec.describe Server do
     session_start_turn(session)
     choose_correct_card(session)
     session.click_on("Go Again")
+  end
+
+  def session_complete_incorrect_turn(session)
+    session_start_turn(session)
+    choose_incorrect_card(session)
+    session.click_on("Continue")
   end
 
   let(:game) { Server.game }
@@ -226,7 +232,18 @@ RSpec.describe Server do
     expect(session2).to have_content("received")
   end
 
-  xcontext "pusher tests" do
+  xit "only shows results from the last 5 turns" do
+    session1, session2 = make_sessions_join(2)
+    session_complete_incorrect_turn(session1)
+    # binding.pry
+    session_complete_incorrect_turn(session2)
+    session_complete_incorrect_turn(session1)
+    refresh_given_sessions([session1, session2])
+    session_complete_incorrect_turn(session2)
+    expect(session2).to have_content("3: Player 2")
+  end
+
+  context "pusher tests" do
     it "uses JS to refresh the page", :js do
       session1, session2 = make_sessions_join(2, true)
       expect(session2).to have_content("Players")
