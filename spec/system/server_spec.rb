@@ -72,6 +72,12 @@ RSpec.describe Server do
     pick_first_option(session)
   end
 
+  def session_complete_correct_turn(session)
+    session_start_turn(session)
+    choose_correct_card(session)
+    session.click_on("Go Again")
+  end
+
   let(:game) { Server.game }
   let(:turn_player) { game.turn_player }
 
@@ -209,6 +215,15 @@ RSpec.describe Server do
     session2.click_on("Start")
     refresh_given_sessions([session1, session2])
     expect(session2).to have_content("Go Fish Player 1")
+  end
+
+  it "shows cards taken in results" do
+    session1, session2 = make_sessions_join(2)
+    session_complete_correct_turn(session1)
+    choose_incorrect_card(session1)
+    session2.click_on("Start")
+    refresh_given_sessions([session1, session2])
+    expect(session2).to have_content("received")
   end
 
   xcontext "pusher tests" do
