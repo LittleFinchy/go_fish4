@@ -18,8 +18,6 @@ channel.bind('game-changed', function(data) {
   }
 });
 
-// channel.bind('game-started', function(data) {
-//   if (window.location.pathname === '/lobby') {
-//     window.location = '/await_turn';
-//   }
-// });
+channel.bind('game-over', function(data) {
+  window.location = '/end_game';
+});

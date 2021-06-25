@@ -21,6 +21,10 @@ class Game
     players.length == num_of_players
   end
 
+  def is_over?
+    true
+  end
+
   def add_player(player)
     deal(player)
     @players.push(player)
