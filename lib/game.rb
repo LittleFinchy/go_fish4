@@ -5,7 +5,7 @@ class Game
   attr_reader :players, :turn_player, :deck
   attr_accessor :turn_index, :results, :num_of_players
 
-  def initialize(num_of_players: 2)
+  def initialize(num_of_players: 0)
     @players = []
     @turn_index = 0
     @num_of_players = num_of_players
@@ -49,25 +49,16 @@ class Game
 
   def play_turn(asked_player, asked_rank)
     num_of_cards_won = turn_player.ask(asked_player, asked_rank)
-    if num_of_cards_won == 0 && deck.cards_left > 0
-      turn_player.take_cards([deck.deal])
-    end
-    # round_results = [turn_player.name, asked_player.name, asked_rank, num_of_cards_won]
-    # results.push(round_results)
-    # num_of_cards_won > 0
-
+    turn_player.take_cards([deck.deal]) if num_of_cards_won == 0 && deck.cards_left > 0
     result = RoundResult.new(turn_player.name, asked_player.name, asked_rank, num_of_cards_won)
+    next_turn if num_of_cards_won == 0
     results.push(result)
+    result
   end
 
   def previous_results
-    # results.each_with_index.map { |result, i| result = "Round #{i}: #{result}" }
-    # until results.length <= 5
-    #   results.shift
-    # end
     first = [0, results.length - 5].max
     last = results.length
     results[first..last]
-    # results
   end
 end

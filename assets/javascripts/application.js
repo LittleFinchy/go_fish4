@@ -13,10 +13,13 @@ channel.bind('game-changed', function(data) {
   if (window.location.pathname === '/await_turn') {
     window.location.reload();
   }
-});
-
-channel.bind('game-started', function(data) {
-  if (window.location.pathname === '/lobby') {
-    window.location = '/await_turn';
+  if (window.location.pathname === '/') {
+    window.location.reload();
   }
 });
+
+// channel.bind('game-started', function(data) {
+//   if (window.location.pathname === '/lobby') {
+//     window.location = '/await_turn';
+//   }
+// });

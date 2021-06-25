@@ -1,14 +1,14 @@
 .your-results-title-box
-  h1.your-results-title You asked #{game.results.last.asked_player_name} for
+  h1.your-results-title You asked #{result.asked_player_name} for
 .card-display
-  p.playing-card.large-card #{game.results.last.asked_rank}
+  p.playing-card.large-card #{result.asked_rank}
 .your-results-footer-box
   h1.your-results-footer 
-    - if game.results.last.go_again?
-      = "#{game.results.last.turn_player_name} received #{game.results.last.num_of_cards_won}"
+    - if result.go_again?
+      = "#{result.turn_player_name} received #{result.num_of_cards_won}"
       a.btn href="/take_turn" Go Again
     - else 
-      - game.next_turn
-      = "Go Fish #{game.results.last.turn_player_name}!"
+      / - game.next_turn
+      = "Go Fish #{result.turn_player_name}!"
       a.btn href="/await_turn" Continue
 

@@ -3,7 +3,7 @@ require "../lib/game"
 require "../lib/player"
 
 describe("#game") do
-  let(:game) { Game.new() }
+  let(:game) { Game.new(num_of_players: 2) }
 
   def make_game_with(num)
     game = Game.new(num_of_players: num)

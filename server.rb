@@ -47,12 +47,20 @@ class Server < Sinatra::Base
   end
 
   get "/" do
-    slim :index
+    if self.class.game.num_of_players == 0
+      slim :index
+    else
+      redirect "/enter_name"
+    end
   end
 
   post "/enter_name" do
-    self.class.game.players_needed_to_start(params["num_of_players"])
+    self.class.game.players_needed_to_start(params["num_of_players"].to_i)
     pusher.trigger("go-fish", "game-changed", {})
+    redirect "/enter_name"
+  end
+
+  get "/enter_name" do
     slim :enter_name
   end
 
@@ -60,7 +68,7 @@ class Server < Sinatra::Base
     player = Player.new(params["name"])
     session[:current_player] = player
     self.class.game.add_player(player)
-    pusher.trigger("go-fish", "game-changed", { id: player.id })
+    pusher.trigger("go-fish", "game-changed", {})
     redirect "/lobby"
   end
 
@@ -91,9 +99,9 @@ class Server < Sinatra::Base
     rank_picked = params["playingcard"]
     player_id_picked = params["player_id"].to_i
     player_picked = self.class.game.find_player_by_id(player_id_picked)
-    self.class.game.play_turn(player_picked, rank_picked)
+    result = self.class.game.play_turn(player_picked, rank_picked)
     pusher.trigger("go-fish", "game-changed", {})
-    slim :your_results, locals: { game: self.class.game, current_player: session[:current_player] }
+    slim :your_results, locals: { result: result, game: self.class.game, current_player: session[:current_player] }
   end
 end
 
