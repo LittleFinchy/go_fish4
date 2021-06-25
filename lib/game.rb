@@ -52,9 +52,13 @@ class Game
   end
 
   def previous_results
-    until results.length <= 5
-      results.shift
-    end
-    results
+    # results.each_with_index.map { |result, i| result = "Round #{i}: #{result}" }
+    # until results.length <= 5
+    #   results.shift
+    # end
+    first = [0, results.length - 5].max
+    last = results.length
+    results[first..last]
+    # results
   end
 end

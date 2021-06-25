@@ -280,7 +280,7 @@ RSpec.describe Server do
       end
     end
 
-    xit "uses JS to refresh the page", :js do
+    it "uses JS to refresh the page", :js do
       session1, session2 = make_sessions_join(2, true)
       expect(session2).to have_content("Players")
       expect(session2).to have_content("Player 2")
