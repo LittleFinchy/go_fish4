@@ -288,10 +288,17 @@ RSpec.describe Server do
       expect(session1).to have_content("Player 2")
     end
 
+    it "uses JS to play 1 round", :js do
+      session1, session2 = make_sessions_join(2, true)
+      session2.click_on "Start"
+      play_first_turn(session1)
+      expect(session2).to have_content("Round 1:")
+    end
+
     it "uses JS to play 6 rounds", :js do
       session1, session2 = make_sessions_join(2, true)
-      play_rounds(5, session1, session2)
-      expect(session1).to have_content("Round 5:")
+      play_rounds(6, session1, session2)
+      expect(session1).to_not have_content("Round 1:")
     end
   end
 end
