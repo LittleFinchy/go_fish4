@@ -50,10 +50,14 @@ class Server < Sinatra::Base
     slim :index
   end
 
+  post "/enter_name" do
+    self.class.game.players_needed_to_start(params["players_needed"])
+    slim :enter_name
+  end
+
   post "/join" do
     player = Player.new(params["name"])
     session[:current_player] = player
-    self.class.game.players_needed_to_start(params["players_needed"])
     self.class.game.add_player(player)
     pusher.trigger("go-fish", "game-changed", { id: player.id })
     redirect "/lobby"

@@ -3,18 +3,21 @@
 
   h3 Login
 
-  form action='/join' method='POST'
-    .form__group
-      label.form__label Name
-      input.form__input type='text' placeholder='Your name...' name='name'
-      label.form__label for="num_of_players" Number of Players
-      select.form__dropdown required="true" name='num_of_players'
-        option value="2" 2 Players
-        option value="3" 3 Players
-        option value="4" 4 Players
-        option value="5" 5 Players
-        option value="6" 6 Players
-        option value="7" 7 Players
+  form action='/enter_name' method='POST'
+    label.form__label for="num_of_players" Number of Players
+    select.form__dropdown required="true" name='num_of_players'
+      option value="2" 2 Players
+      option value="3" 3 Players
+      option value="4" 4 Players
+      option value="5" 5 Players
+      option value="6" 6 Players
+      option value="7" 7 Players
+    label.form__label for="num_of_Bots" Number of Bots
+    select.form__dropdown required="true" name='num_of_Bots'
+      option value="0" 0 Bots
+      option value="1" 1 Bots
+      option value="2" 2 Bots
+      option value="3" 3 Bots
 
     .form__group
-      button class="btn btn--primary" type='submit' Join Game
+      button class="btn btn--primary" type='submit' Create Game
