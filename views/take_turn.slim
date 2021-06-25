@@ -1,16 +1,16 @@
 h1.turn-title Your Turn 
 span Pick a card and player...
-form.turn-page-form action='/your_results' method='GET'
+form.turn-page-form action='/take_turn' method='POST'
   .card-view-box
     span = "#{game.turn_player.name}: #{game.turn_player.score} books"
     .card-view
       - game.turn_player.hand.each_with_index do |card, i|
-        input.selectable-card type="radio" id="card#{i}" name="playingcard" value="#{card.rank}"
+        input.selectable-card type="radio" id="card#{i}" required="true" name="playingcard" value="#{card.rank}"
         label.playing-card for="card#{i}" = card.rank
   .player-view-box
     .player-view
       - game.not_turn_players.each_with_index do |player, i|
-        input.selectable-card type="radio" id="player#{i}" name="player_id" value="#{player.id}"
+        input.selectable-card type="radio" id="player#{i}" required="true" name="player_id" value="#{player.id}"
         label.player-card for="player#{i}"
           span = player.name
           ul 

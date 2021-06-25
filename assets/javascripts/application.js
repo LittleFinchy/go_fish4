@@ -8,9 +8,15 @@ const pusher = new Pusher('6440facb664c305448af', {
 const channel = pusher.subscribe('go-fish');
 channel.bind('game-changed', function(data) {
   if (window.location.pathname === '/lobby') {
-  window.location.reload();
+    window.location.reload();
   }
   if (window.location.pathname === '/await_turn') {
-  window.location.reload();
+    window.location.reload();
+  }
+});
+
+channel.bind('game-started', function(data) {
+  if (window.location.pathname === '/lobby') {
+    window.location = '/await_turn';
   }
 });

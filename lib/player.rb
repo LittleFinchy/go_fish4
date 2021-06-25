@@ -1,11 +1,13 @@
 class Player
-  attr_reader :name
-  attr_accessor :id, :hand, :score
+  attr_reader :name, :id
+  attr_accessor :hand, :score
+
+  @@total_players = 0
 
   def initialize(name)
     @name = name
     @score = 0
-    @id = 0
+    @id = @@total_players += 1
     @hand = []
     @score = 0
   end

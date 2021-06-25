@@ -1,8 +1,9 @@
 require "./lib/deck"
+require "./lib/round_result"
 
 class Game
-  attr_reader :players, :turn_player, :num_of_players, :deck
-  attr_accessor :turn_index, :results
+  attr_reader :players, :turn_player, :deck
+  attr_accessor :turn_index, :results, :num_of_players
 
   def initialize(num_of_players: 2)
     @players = []
@@ -12,12 +13,15 @@ class Game
     @results = []
   end
 
+  def players_needed_to_start(num)
+    self.num_of_players = num
+  end
+
   def ready?
     players.length == num_of_players
   end
 
   def add_player(player)
-    player.id = players.length
     deal(player)
     @players.push(player)
   end
@@ -48,7 +52,12 @@ class Game
     if num_of_cards_won == 0 && deck.cards_left > 0
       turn_player.take_cards([deck.deal])
     end
-    num_of_cards_won
+    # round_results = [turn_player.name, asked_player.name, asked_rank, num_of_cards_won]
+    # results.push(round_results)
+    # num_of_cards_won > 0
+
+    result = RoundResult.new(turn_player.name, asked_player.name, asked_rank, num_of_cards_won)
+    results.push(result)
   end
 
   def previous_results

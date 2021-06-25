@@ -10,7 +10,7 @@ p #{game.turn_player.name} is taking their turn. You will be updated on the roun
 - if game.results.any?
   ul
     - game.previous_results.each do |result|
-      li = result
+      li = result.show
 
 - if current_player.id == game.turn_player.id
   a.btn href="/take_turn" Take Turn

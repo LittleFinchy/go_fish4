@@ -53,6 +53,7 @@ class Server < Sinatra::Base
   post "/join" do
     player = Player.new(params["name"])
     session[:current_player] = player
+    self.class.game.players_needed_to_start(params["players_needed"])
     self.class.game.add_player(player)
     pusher.trigger("go-fish", "game-changed", { id: player.id })
     redirect "/lobby"
@@ -64,6 +65,7 @@ class Server < Sinatra::Base
   end
 
   get "/await_turn" do
+    # pusher.trigger("go-fish", "game-started", {})
     if self.class.game.ready?
       slim :await_turn, locals: { game: self.class.game, current_player: session[:current_player] }
     else
@@ -80,12 +82,14 @@ class Server < Sinatra::Base
     end
   end
 
-  get "/your_results" do
+  post "/take_turn" do
     rank_picked = params["playingcard"]
     player_id_picked = params["player_id"].to_i
     player_picked = self.class.game.find_player_by_id(player_id_picked)
-    num_of_cards_taken = self.class.game.play_turn(player_picked, rank_picked)
+    self.class.game.play_turn(player_picked, rank_picked)
     pusher.trigger("go-fish", "game-changed", {})
-    slim :your_results, locals: { player_picked: player_picked, rank_picked: rank_picked, num_of_cards_taken: num_of_cards_taken, game: self.class.game, current_player: session[:current_player] }
+    slim :your_results, locals: { game: self.class.game, current_player: session[:current_player] }
   end
 end
+
+# change num_of_cards_taken to result and only pass that result into the view

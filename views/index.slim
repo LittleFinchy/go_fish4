@@ -7,6 +7,14 @@
     .form__group
       label.form__label Name
       input.form__input type='text' placeholder='Your name...' name='name'
+      label.form__label for="num_of_players" Number of Players
+      select.form__dropdown required="true" name='num_of_players'
+        option value="2" 2 Players
+        option value="3" 3 Players
+        option value="4" 4 Players
+        option value="5" 5 Players
+        option value="6" 6 Players
+        option value="7" 7 Players
 
     .form__group
       button class="btn btn--primary" type='submit' Join Game
