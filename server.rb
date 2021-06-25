@@ -51,7 +51,8 @@ class Server < Sinatra::Base
   end
 
   post "/enter_name" do
-    self.class.game.players_needed_to_start(params["players_needed"])
+    self.class.game.players_needed_to_start(params["num_of_players"])
+    pusher.trigger("go-fish", "game-changed", {})
     slim :enter_name
   end
 
