@@ -50,4 +50,12 @@ describe("#game") do
     game.next_turn
     expect(game.turn_player.name).to eq "Player 1"
   end
+
+  context "#winner" do
+    it "returns player with most books" do
+      game = make_game_with(2)
+      game.turn_player.score = 10
+      expect(game.winner.name).to eq "Player 1"
+    end
+  end
 end

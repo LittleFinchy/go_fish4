@@ -78,7 +78,7 @@ class Server < Sinatra::Base
   end
 
   get "/await_turn" do
-    redirect "/end_game" if self.class.game.is_over?
+    pusher.trigger("go-fish", "game-ended", {}) if self.class.game.is_over?
     if self.class.game.ready?
       slim :await_turn, locals: { game: self.class.game, current_player: session[:current_player] }
     else
@@ -96,8 +96,7 @@ class Server < Sinatra::Base
   end
 
   get "/end_game" do
-    pusher.trigger("go-fish", "game-over", {})
-    slim :end_game
+    slim :end_game, locals: { game: self.class.game }
   end
 
   post "/take_turn" do

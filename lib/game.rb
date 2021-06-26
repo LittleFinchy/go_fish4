@@ -22,7 +22,14 @@ class Game
   end
 
   def is_over?
-    true
+    total_score = players.inject(0) { |sum, player| sum + player.score }
+    total_score >= 13
+  end
+
+  def winner
+    scores = {}
+    players.each { |player| scores[player.score] = player }
+    scores[scores.keys.max]
   end
 
   def add_player(player)

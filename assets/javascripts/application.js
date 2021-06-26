@@ -18,6 +18,8 @@ channel.bind('game-changed', function(data) {
   }
 });
 
-channel.bind('game-over', function(data) {
-  window.location = '/end_game';
+channel.bind('game-ended', function(data) {
+  if (window.location.pathname !== '/end_game') {
+    window.location = '/end_game';
+  }
 });

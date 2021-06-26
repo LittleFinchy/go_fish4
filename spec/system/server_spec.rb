@@ -242,9 +242,8 @@ RSpec.describe Server do
   end
 
   it "shows who won the game when the game is over" do
-    session1, session2 = make_sessions_join(2)
+    session1, session2 = make_sessions_join(2, selenium: true)
     game.turn_player.score = 13
-    refresh_given_sessions([session1, session2])
     session1.click_on "Start"
     expect(session1).to have_content("Player 1 won with 13 books!")
   end
@@ -252,7 +251,6 @@ RSpec.describe Server do
   it "shows all players the winner screen when the game is over" do
     session1, session2 = make_sessions_join(2, selenium: true)
     game.turn_player.score = 13
-    refresh_given_sessions([session1, session2])
     session1.click_on "Start"
     expect(session2).to have_content("Player 1 won with 13 books!")
   end
