@@ -94,7 +94,7 @@ RSpec.describe Server do
     session.click_on("Continue")
   end
 
-  def setup_game_with_x_players(num_of_players)
+  def setup_game_with_settings(num_of_players = 2, num_of_bots = 0)
     session = Capybara::Session.new(:rack_test, Server.new)
     session.visit "/"
     session.select(num_of_players.to_s, from: "num_of_players")
@@ -265,7 +265,7 @@ RSpec.describe Server do
   end
 
   it "allows more than 2 players to join a game" do
-    session3 = setup_game_with_x_players(3)
+    session3 = setup_game_with_settings(3)
     session1, session2 = make_sessions_join(2, make_a_game: false)
     refresh_given_sessions([session1, session2, session3])
     expect(session1).to have_content("3/3")
@@ -273,8 +273,10 @@ RSpec.describe Server do
 
   context "Bots" do
     it "lets a bot join the game" do
-      session1, session2 = make_sessions_join(2, selenium: true, make_a_game: false)
-
+      session2 = setup_game_with_settings(2, 1)
+      session1 = make_sessions_join(1, make_a_game: false)[0]
+      refresh_given_sessions([session1, session2])
+      expect(game.players[1].is_bot?).to eq true
     end
 
     it "lets a bot take a turn" do

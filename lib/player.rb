@@ -1,15 +1,16 @@
 class Player
-  attr_reader :name, :id
+  attr_reader :name, :id, :is_bot
   attr_accessor :hand, :score
 
   @@total_players = 0
 
-  def initialize(name)
+  def initialize(name, is_bot = false)
     @name = name
     @score = 0
     @id = @@total_players += 1
     @hand = []
     @score = 0
+    @is_bot = is_bot
   end
 
   def cards_left
@@ -50,5 +51,10 @@ class Player
       self.score += 1
       self.hand -= matching
     end
+  end
+
+  # BOT STUFF
+  def is_bot?
+    is_bot
   end
 end
