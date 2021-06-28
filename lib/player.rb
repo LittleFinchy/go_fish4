@@ -57,4 +57,22 @@ class Player
   def is_bot?
     is_bot
   end
+
+  def bot_turn(other_players, past_rounds)
+    [smart_player_pick(other_players), smart_card_pick]
+  end
+
+  def smart_player_pick(other_players)
+    other_players.first
+  end
+
+  def smart_card_pick
+    hand.first.rank
+  end
+
+  
+  memory = {}
+  past_rounds.each do |round|
+    memory[round.asked_rank] = turn_player_name
+  end
 end

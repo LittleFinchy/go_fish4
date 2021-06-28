@@ -272,31 +272,7 @@ RSpec.describe Server do
     expect(session1).to have_content("3/3")
   end
 
-  context "Bots" do
-    it "lets a bot join the game" do
-      session2 = setup_game_with_settings(2, 1)
-      session1 = make_sessions_join(1, make_a_game: false)[0]
-      refresh_given_sessions([session1, session2])
-      expect(game.players.last.is_bot?).to eq true
-    end
-
-    it "lets a bot take a turn" do
-      session2 = setup_game_with_settings(1, 1)
-      # session1 = make_sessions_join(1, make_a_game: false)[0]
-      # refresh_given_sessions([session1, session2])
-      session_complete_incorrect_turn(session2)
-      # binding.pry
-      # session_complete_incorrect_turn(session1)
-      game.play_turn(game.players.last, game.turn_player.hand.first.rank)
-      refresh_given_sessions([session2])
-      expect(session2).to have_content("Bot asked")
-    end
-
-    it "lets a player take a turn after a bot takes a turn" do
-    end
-  end
-
-  xcontext "pusher tests" do
+  context "Pusher and Bots" do
     def play_first_turn(session)
       session.click_on "Start"
       play_next_turn(session)
@@ -337,25 +313,61 @@ RSpec.describe Server do
       end
     end
 
-    it "uses JS to refresh the page", :js do
-      session1, session2 = make_sessions_join(2, selenium: true)
-      expect(session2).to have_content("Players")
-      expect(session2).to have_content("Player 2")
-      expect(session1).to have_content("Players")
-      expect(session1).to have_content("Player 2")
-    end
-
-    it "uses JS to play 1 round", :js do
-      session1, session2 = make_sessions_join(2, selenium: true)
-      session2.click_on "Start"
+    # dumping ground
+    def take_first_turns(session2, session1)
+      play_first_turn(session2)
       play_first_turn(session1)
-      expect(session2).to have_content("Round 1:")
     end
 
-    it "uses JS to play 6 rounds", :js do
-      session1, session2 = make_sessions_join(2, selenium: true)
-      play_rounds(6, session1, session2)
-      expect(session1).to_not have_content("Round 1:")
+    context "Bot tests" do
+      it "lets a bot join the game" do
+        session2 = setup_game_with_settings(2, 1)
+        session1 = make_sessions_join(1, make_a_game: false)[0]
+        refresh_given_sessions([session1, session2])
+        expect(game.players.last.is_bot?).to eq true
+      end
+
+      it "lets a bot take a turn" do
+        session2 = setup_game_with_settings(2, 2)
+        session1 = make_sessions_join(1, make_a_game: false)[0]
+        refresh_given_sessions([session2])
+        take_first_turns(session2, session1)
+        refresh_given_sessions([session2])
+        expect(session2).to have_content("Bot asked")
+      end
+
+      it "lets a player take a turn after a bot takes a turn" do
+        session2 = setup_game_with_settings(2, 2)
+        session1 = make_sessions_join(1, make_a_game: false)[0]
+        refresh_given_sessions([session2])
+        take_first_turns(session2, session1)
+        refresh_given_sessions([session2])
+        play_next_turn(session2)
+        expect(session2).to have_content("taking their turn")
+      end
+    end
+
+    xcontext "Pusher JS tests" do
+      it "uses JS to refresh the page", :js do
+        session1, session2 = make_sessions_join(2, selenium: true)
+        expect(session2).to have_content("Players")
+        expect(session2).to have_content("Player 2")
+        expect(session1).to have_content("Players")
+        expect(session1).to have_content("Player 2")
+      end
+
+      it "uses JS to play 1 round", :js do
+        session1, session2 = make_sessions_join(2, selenium: true)
+        session2.click_on "Start"
+        play_first_turn(session1)
+        expect(session2).to have_content("Round 1:")
+      end
+
+      it "uses JS to play 6 rounds", :js do
+        session1, session2 = make_sessions_join(2, selenium: true)
+        play_rounds(6, session1, session2)
+        expect(session1).to_not have_content("Round 1:")
+      end
     end
   end
 end
