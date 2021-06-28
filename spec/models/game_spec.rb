@@ -3,10 +3,10 @@ require "../lib/game"
 require "../lib/player"
 
 describe("#game") do
-  let(:game) { Game.new(num_of_players: 2) }
+  let(:game) { Game.new(players_needed_to_start: 2) }
 
   def make_game_with(num)
-    game = Game.new(num_of_players: num)
+    game = Game.new(players_needed_to_start: num)
     num.times do |index|
       game.add_player(Player.new("Player #{index + 1}"))
     end

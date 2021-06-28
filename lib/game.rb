@@ -3,22 +3,22 @@ require "./lib/round_result"
 
 class Game
   attr_reader :players, :turn_player, :deck
-  attr_accessor :turn_index, :results, :num_of_players
+  attr_accessor :turn_index, :results, :players_needed_to_start
 
-  def initialize(num_of_players: 0)
+  def initialize(players_needed_to_start: 0)
     @players = []
     @turn_index = 0
-    @num_of_players = num_of_players
+    @players_needed_to_start = players_needed_to_start
     @deck = Deck.new()
     @results = []
   end
 
-  def players_needed_to_start(num)
-    self.num_of_players = num
+  def settings_needed_to_start(num_of_players, num_of_bots)
+    self.players_needed_to_start = num_of_players
   end
 
   def ready?
-    players.length == num_of_players
+    players.length == players_needed_to_start
   end
 
   def is_over?

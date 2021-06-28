@@ -13,10 +13,10 @@ RSpec.describe Server do
   # include Rack::Test::Methods
   include Capybara::DSL
 
-  def make_sessions_join(num, selenium: false, create: true)
+  def make_sessions_join(num, selenium: false, make_a_game: true)
     num.times.map do |i|
       session = selenium ? Capybara::Session.new(:selenium_chrome_headless, Server.new) : Capybara::Session.new(:rack_test, Server.new)
-      create_game(session) if create && i == 0
+      create_game(session) if make_a_game && i == 0
       enter_with_name(session, i)
     end
   end
@@ -92,6 +92,15 @@ RSpec.describe Server do
     session_start_turn(session)
     choose_incorrect_card(session)
     session.click_on("Continue")
+  end
+
+  def setup_game_with_x_players(num_of_players)
+    session = Capybara::Session.new(:rack_test, Server.new)
+    session.visit "/"
+    session.select(num_of_players.to_s, from: "num_of_players")
+    session.click_on("Create Game")
+    enter_with_name(session, (num_of_players - 1))
+    session
   end
 
   let(:game) { Server.game }
@@ -253,6 +262,26 @@ RSpec.describe Server do
     game.turn_player.score = 13
     session1.click_on "Start"
     expect(session2).to have_content("Player 1 won with 13 books!")
+  end
+
+  it "allows more than 2 players to join a game" do
+    session3 = setup_game_with_x_players(3)
+    session1, session2 = make_sessions_join(2, make_a_game: false)
+    refresh_given_sessions([session1, session2, session3])
+    expect(session1).to have_content("3/3")
+  end
+
+  context "Bots" do
+    it "lets a bot join the game" do
+      session1, session2 = make_sessions_join(2, selenium: true, make_a_game: false)
+
+    end
+
+    it "lets a bot take a turn" do
+    end
+
+    it "lets a player take a turn after a bot takes a turn" do
+    end
   end
 
   xcontext "pusher tests" do

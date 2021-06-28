@@ -47,7 +47,7 @@ class Server < Sinatra::Base
   end
 
   get "/" do
-    if self.class.game.num_of_players == 0
+    if self.class.game.players_needed_to_start == 0
       slim :index
     else
       redirect "/enter_name"
@@ -55,7 +55,7 @@ class Server < Sinatra::Base
   end
 
   post "/enter_name" do
-    self.class.game.players_needed_to_start(params["num_of_players"].to_i)
+    self.class.game.settings_needed_to_start(params["num_of_players"].to_i, params["num_of_bots"].to_i)
     pusher.trigger("go-fish", "game-changed", {})
     redirect "/enter_name"
   end
