@@ -78,7 +78,7 @@ class Server < Sinatra::Base
   end
 
   get "/await_turn" do
-    pusher.trigger("go-fish", "game-ended", {}) if self.class.game.is_over?
+    pusher.trigger("go-fish", "game-ended", {}) if self.class.game.over?
     if self.class.game.ready?
       slim :await_turn, locals: { game: self.class.game, current_player: session[:current_player] }
     else
@@ -108,5 +108,3 @@ class Server < Sinatra::Base
     slim :your_results, locals: { result: result, game: self.class.game, current_player: session[:current_player] }
   end
 end
-
-# change num_of_cards_taken to result and only pass that result into the view

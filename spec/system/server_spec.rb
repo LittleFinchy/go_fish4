@@ -98,6 +98,7 @@ RSpec.describe Server do
     session = Capybara::Session.new(:rack_test, Server.new)
     session.visit "/"
     session.select(num_of_players.to_s, from: "num_of_players")
+    session.select(num_of_bots.to_s, from: "num_of_bots")
     session.click_on("Create Game")
     enter_with_name(session, (num_of_players - 1))
     session
@@ -276,10 +277,19 @@ RSpec.describe Server do
       session2 = setup_game_with_settings(2, 1)
       session1 = make_sessions_join(1, make_a_game: false)[0]
       refresh_given_sessions([session1, session2])
-      expect(game.players[1].is_bot?).to eq true
+      expect(game.players.last.is_bot?).to eq true
     end
 
     it "lets a bot take a turn" do
+      session2 = setup_game_with_settings(1, 1)
+      # session1 = make_sessions_join(1, make_a_game: false)[0]
+      # refresh_given_sessions([session1, session2])
+      session_complete_incorrect_turn(session2)
+      # binding.pry
+      # session_complete_incorrect_turn(session1)
+      game.play_turn(game.players.last, game.turn_player.hand.first.rank)
+      refresh_given_sessions([session2])
+      expect(session2).to have_content("Bot asked")
     end
 
     it "lets a player take a turn after a bot takes a turn" do

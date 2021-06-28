@@ -14,14 +14,18 @@ class Game
   end
 
   def settings_needed_to_start(num_of_players, num_of_bots)
-    self.players_needed_to_start = num_of_players
+    self.players_needed_to_start = num_of_players + num_of_bots
+    num_of_bots.times do |bot|
+      add_player(Player.new(["betterBot", "stephenBot", "bestBot", "notYourBot", "realHumanPlayer"].sample, true))
+    end
   end
 
   def ready?
+    players.sort_by! { |player| player.is_bot? ? 1 : 0 }
     players.length == players_needed_to_start
   end
 
-  def is_over?
+  def over?
     total_score = players.inject(0) { |sum, player| sum + player.score }
     total_score >= 13
   end
@@ -46,6 +50,15 @@ class Game
     players[turn_index % players.length]
   end
 
+  def check_for_bot_turn
+    if turn_player.is_bot
+      result = play_turn(players.first, turn_player.hand.first.rank)
+      if result.go_again?
+        check_for_bot_turn
+      end
+    end
+  end
+
   def not_turn_players
     players - [turn_player]
   end
@@ -63,6 +76,7 @@ class Game
     turn_player.take_cards([deck.deal]) if num_of_cards_won == 0 && deck.cards_left > 0
     result = RoundResult.new(turn_player.name, asked_player.name, asked_rank, num_of_cards_won)
     next_turn if num_of_cards_won == 0
+    check_for_bot_turn
     results.push(result)
     result
   end
@@ -70,6 +84,6 @@ class Game
   def previous_results
     first = [0, results.length - 5].max
     last = results.length
-    results[first..last]
+    results[first..last].sort_by! { |round| round.round_number }
   end
 end
