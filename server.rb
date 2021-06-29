@@ -5,6 +5,7 @@ require "sinatra/reloader"
 require "sprockets"
 require "./lib/player"
 require "./lib/game"
+require "./lib/round_result"
 
 class Server < Sinatra::Base
   configure :development do
@@ -43,6 +44,7 @@ class Server < Sinatra::Base
   end
 
   def self.reset_game
+    RoundResult.reset
     @@game = nil
   end
 

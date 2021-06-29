@@ -16,7 +16,7 @@ class Game
   def settings_needed_to_start(num_of_players, num_of_bots)
     self.players_needed_to_start = num_of_players + num_of_bots
     num_of_bots.times do |bot|
-      add_player(Player.new(["aBot", "bBot", "cBot", "dBot", "eBot", "fBot", "gBot", "hBot", "betterBot", "stephenBot", "bestBot", "notYourBot", "realHumanPlayer"].sample, true))
+      add_player(Player.new(is_bot: true))
     end
   end
 
@@ -52,8 +52,8 @@ class Game
 
   def check_for_bot_turn
     if turn_player.is_bot
-      smart_player_pick, smart_card_pick = turn_player.bot_turn(not_turn_players, previous_results)
-      result = play_turn(smart_player_pick, smart_card_pick)
+      bot_player_pick, bot_card_pick = turn_player.bot_turn(not_turn_players, previous_results)
+      result = play_turn(bot_player_pick, bot_card_pick)
       if result.go_again?
         check_for_bot_turn
       end

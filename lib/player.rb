@@ -1,11 +1,12 @@
 class Player
-  attr_reader :name, :id, :is_bot
-  attr_accessor :hand, :score
+  attr_reader :id, :is_bot
+  attr_accessor :hand, :score, :name
 
   @@total_players = 0
+  @@bot_names = ["badBot", "beeBot", "byeBot", "betterBot", "beepBot", "bestBot", "boopBot", "bingBot", "babyBot", "breadBot", "bananaBot"]
 
-  def initialize(name, is_bot = false)
-    @name = name
+  def initialize(name = "Player", is_bot: false)
+    @name = is_bot ? @@bot_names.shuffle!.pop : name
     @score = 0
     @id = @@total_players += 1
     @hand = []
@@ -54,16 +55,18 @@ class Player
   end
 
   # BOT STUFF
+
   def is_bot?
     is_bot
   end
 
-  def bot_turn(other_players, past_rounds)
-    memory = {}
+  def bot_turn(other_players, past_rounds, memory = {})
     past_rounds.each { |round| memory[round.asked_rank] = round.turn_player }
-    rank_asking_for = memory.keys.each do |key|
-      hand.find { |card| card.rank == key }
-    end.first
-    [memory.fetch(rank_asking_for, other_players.first), rank_asking_for]
+    rank_asking_for = hand.each do |card|
+      memory.keys.find { |key| key == card.rank }
+    end.first.rank
+    output = [memory.fetch(rank_asking_for, other_players.first), rank_asking_for]
+    memory[rank_asking_for] = nil
+    output
   end
 end

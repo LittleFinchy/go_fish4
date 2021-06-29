@@ -12,6 +12,10 @@ class RoundResult
     @turn_player = turn_player
   end
 
+  def self.reset
+    @@total_rounds = 0
+  end
+
   def go_again?
     num_of_cards_won > 0
   end

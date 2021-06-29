@@ -8,7 +8,5 @@
       = "#{result.turn_player_name} received #{result.num_of_cards_won}"
       a.btn href="/take_turn" Go Again
     - else 
-      / - game.next_turn
       = "Go Fish #{result.turn_player_name}!"
       a.btn href="/await_turn" Continue
-
