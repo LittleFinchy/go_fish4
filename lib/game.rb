@@ -75,7 +75,7 @@ class Game
   def play_turn(asked_player, asked_rank)
     num_of_cards_won = turn_player.ask(asked_player, asked_rank)
     turn_player.take_cards([deck.deal]) if num_of_cards_won == 0 && deck.cards_left > 0
-    result = RoundResult.new(turn_player.name, asked_player.name, asked_rank, num_of_cards_won)
+    result = RoundResult.new(turn_player, asked_player, asked_rank, num_of_cards_won)
     next_turn if num_of_cards_won == 0
     check_for_bot_turn
     results.push(result)

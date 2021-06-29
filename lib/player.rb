@@ -59,20 +59,11 @@ class Player
   end
 
   def bot_turn(other_players, past_rounds)
-    [smart_player_pick(other_players), smart_card_pick]
-  end
-
-  def smart_player_pick(other_players)
-    other_players.first
-  end
-
-  def smart_card_pick
-    hand.first.rank
-  end
-
-  
-  memory = {}
-  past_rounds.each do |round|
-    memory[round.asked_rank] = turn_player_name
+    memory = {}
+    past_rounds.each { |round| memory[round.asked_rank] = round.turn_player }
+    rank_asking_for = memory.keys.each do |key|
+      hand.find { |card| card.rank == key }
+    end.first
+    [memory.fetch(rank_asking_for, other_players.first), rank_asking_for]
   end
 end

@@ -1,14 +1,15 @@
 class RoundResult
-  attr_reader :turn_player_name, :asked_player_name, :asked_rank, :num_of_cards_won, :round_number
+  attr_reader :turn_player_name, :asked_player_name, :asked_rank, :num_of_cards_won, :round_number, :turn_player
 
   @@total_rounds = 0
 
-  def initialize(turn_player_name, asked_player_name, asked_rank, num_of_cards_won)
-    @turn_player_name = turn_player_name
-    @asked_player_name = asked_player_name
+  def initialize(turn_player, asked_player, asked_rank, num_of_cards_won)
+    @turn_player_name = turn_player.name
+    @asked_player_name = asked_player.name
     @asked_rank = asked_rank
     @num_of_cards_won = num_of_cards_won
     @round_number = @@total_rounds += 1
+    @turn_player = turn_player
   end
 
   def go_again?
