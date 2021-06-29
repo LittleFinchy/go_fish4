@@ -6,7 +6,7 @@
   h1.your-results-footer 
     - if result.go_again?
       = "#{result.turn_player_name} received #{result.num_of_cards_won}"
-      a.btn href="/take_turn" Go Again
+      a.btn.btn--primary.btn--center href="/take_turn" Go Again
     - else 
       = "Go Fish #{result.turn_player_name}!"
-      a.btn href="/await_turn" Continue
+      a.btn.btn--primary.btn--center href="/await_turn" Continue

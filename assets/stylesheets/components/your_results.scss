@@ -1,0 +1,41 @@
+.your-results-title-box {
+  margin: 0 auto;
+  width: 40%;
+  border-bottom: 4px solid var(--color-secondary);
+}
+
+.your-results-title {
+  margin-top: 2rem;
+  padding-bottom: 2rem;
+  text-align: center;
+  font-size: 3rem;
+}
+
+.card-display {
+  display: flex;
+  justify-content: center;
+  padding: 6.5rem;
+
+  & p {
+    margin: 0;
+  }
+}
+
+.large-card {
+  width: 7rem;
+  height: 8rem;
+  font-size: 6rem;
+}
+
+.your-results-footer-box {
+  margin: 0 auto;
+  width: 40%;
+  border-top: 4px solid var(--color-secondary);
+}
+
+.your-results-footer {
+  margin-bottom: 2rem;
+  padding-top: 2rem;
+  text-align: center;
+  font-size: 3rem;
+}

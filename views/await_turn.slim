@@ -1,11 +1,11 @@
-h1 Game is underway...
+h1.page-title Game is Underway
 - game.players.each do |player|
   - if player.id == current_player.id
-    ul
+    .card-view-box.card-view
       - player.hand.each do |card|
-        li = card.rank
+        .playing-card = card.rank
 
-p #{game.turn_player.name} is taking their turn. You will be updated on the round results soon.
+span.page-subtitle #{game.turn_player.name} is taking their turn. You will be updated on the round results soon.
 
 - if game.results.any?
   ul
@@ -13,4 +13,4 @@ p #{game.turn_player.name} is taking their turn. You will be updated on the roun
       li = result.show
 
 - if current_player.id == game.turn_player.id
-  a.btn href="/take_turn" Take Turn
+  a.btn.btn--primary.btn--center href="/take_turn" Take Turn

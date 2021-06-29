@@ -1,5 +1,6 @@
-h1.turn-title Your Turn 
-span Pick a card and player...
+.turn-title-box
+  h1.turn-title Your Turn 
+span.turn-under-title Pick a card and player...
 form.turn-page-form action='/take_turn' method='POST'
   .card-view-box
     span = "#{game.turn_player.name}: #{game.turn_player.score} books"
@@ -16,4 +17,5 @@ form.turn-page-form action='/take_turn' method='POST'
           ul 
             li Cards: #{player.cards_left}
             li Books: #{player.score}
-  button.btn type="submit" Ask
+  button.btn.btn--primary.btn--center type="submit" Ask
+

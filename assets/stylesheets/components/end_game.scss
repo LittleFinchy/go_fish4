@@ -1,0 +1,47 @@
+.end-title-box {
+  margin: 0 auto;
+  width: 25%;
+  border-bottom: 2px solid var(--color-primary);
+}
+
+.end-title {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 3rem;
+}
+
+.winners-box  {
+  padding: 1rem 0;
+  margin: 0 auto;
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-evenly;
+  border-bottom: 2px solid var(--color-primary);
+  width: 25%;
+  gap: 1rem;
+}
+
+.player-score {
+  text-align: center;
+  padding: 2rem;
+  border: 1px solid var(--neutral-layer-1-border);
+  background-color: var(--neutral-layer-1-background);
+  width: 90%;
+  font-size: 1.2rem;
+  user-select: none;
+}
+
+.winning-player-score {
+  width: 100%;
+  font-size: 1.5rem;
+  border: 2px solid var(--color-secondary);
+}
+
+.link-to-lobby {
+  display: block;
+  margin: 2rem auto 0;
+  padding: 1rem;
+  width: 15%;
+}

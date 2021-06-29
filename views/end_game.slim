@@ -1,3 +1,9 @@
-/ h1 Player 1 won with 13 books!
 
 h1 = "#{game.winner.name} won with #{game.winner.score} books!"
+
+
+.end-title-box
+  h1.end-title Game Over 
+ul.winners-box 
+  li.winning-player-score.player-score "#{game.winner.name} won with #{game.winner.score} books!"
+a.btn.btn--primary.link-to-lobby href="/lobby" Return to Lobby

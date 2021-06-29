@@ -1,6 +1,6 @@
-h1 Players:
-h3 = "#{game.players.length}/#{game.players_needed_to_start}"
-ul
+h1.page-title Lobby
+h3.page-subtitle = "Players: #{game.players.length}/#{game.players_needed_to_start}"
+ul.lobby-players
   - game.players.each do |player|
     li
       - if player.id == current_player.id
@@ -8,4 +8,4 @@ ul
       - else
         span = player.name
 - if game.ready?
-  a.btn href="/await_turn" Start
+  a.btn.btn--primary.btn--center href="/await_turn" Start
