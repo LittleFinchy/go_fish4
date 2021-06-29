@@ -5,4 +5,8 @@ class PlayingCard
     @rank = rank
     @value = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"].index(rank)
   end
+
+  def ==(other_card)
+    self.rank == other_card.rank
+  end
 end

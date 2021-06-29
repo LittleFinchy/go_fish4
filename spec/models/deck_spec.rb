@@ -24,11 +24,7 @@ describe("#deck") do
 
   it "should shuffle the deck when made" do
     deck = Deck.new()
-    cards = deal_cards(deck, 39)
-    ranks = []
-    cards.each do |card|
-      ranks.push(card.rank)
-    end
-    expect(ranks.uniq.length >= 12).to eq true
+    deck2 = Deck.new()
+    expect(deck.cards == deck2.cards).to eq false
   end
 end

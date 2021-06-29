@@ -1,5 +1,6 @@
 require "./lib/deck"
 require "./lib/round_result"
+require "./lib/player"
 
 class Game
   attr_reader :players, :turn_player, :deck
