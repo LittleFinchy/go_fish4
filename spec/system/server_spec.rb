@@ -327,6 +327,15 @@ RSpec.describe Server do
         expect(game.players.last.is_bot?).to eq true
       end
 
+      it "wont go into a loop" do
+        session2 = setup_game_with_settings(2, 1)
+        session1 = make_sessions_join(1, make_a_game: false)[0]
+        refresh_given_sessions([session1, session2])
+        # find way to rig the loop
+        loop_ = false
+        expect(loop_).to eq false
+      end
+
       it "lets a bot take a turn" do
         session2 = setup_game_with_settings(2, 2)
         session1 = make_sessions_join(1, make_a_game: false)[0]

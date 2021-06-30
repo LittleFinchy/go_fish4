@@ -31,6 +31,7 @@
   flex: 1;
   min-width: $breakpoint-xxs;
   background-color: var(--neutral-layer-2-background);
+  margin-bottom: 2rem;
 
   & p {
     margin-left: 1rem;
@@ -114,4 +115,30 @@
   padding: 1rem 4rem;
   margin: 0 auto;
   font-size: 1.2rem;
+}
+
+.page-text {
+  display: block;
+  margin: 2rem;
+  text-align: center;
+}
+
+.results-view-box {
+  border: 1px solid var(--neutral-layer-2-border);
+  flex: 1;
+  min-width: $breakpoint-xxs;
+  background-color: var(--neutral-layer-2-background);
+  margin-bottom: 2rem;
+
+  & p {
+    margin-left: 1rem;
+  }
+}
+
+.result-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  gap: 1rem;
 }

@@ -52,12 +52,11 @@ class Game
   end
 
   def check_for_bot_turn
+    # binding.pry
     if turn_player.is_bot
       bot_player_pick, bot_card_pick = turn_player.bot_turn(not_turn_players, previous_results)
-      result = play_turn(bot_player_pick, bot_card_pick)
-      if result.go_again?
-        check_for_bot_turn
-      end
+      # play_turn(bot_player_pick, bot_card_pick)
+      play_turn(not_turn_players.sample, turn_player.hand.sample.rank)
     end
   end
 
@@ -78,8 +77,8 @@ class Game
     turn_player.take_cards([deck.deal]) if num_of_cards_won == 0 && deck.cards_left > 0
     result = RoundResult.new(turn_player, asked_player, asked_rank, num_of_cards_won)
     next_turn if num_of_cards_won == 0
-    check_for_bot_turn
     results.push(result)
+    check_for_bot_turn
     result
   end
 

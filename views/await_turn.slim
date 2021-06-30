@@ -5,12 +5,12 @@ h1.page-title Game is Underway
       - player.hand.each do |card|
         .playing-card = card.rank
 
-span.page-subtitle #{game.turn_player.name} is taking their turn. You will be updated on the round results soon.
+span.page-text #{game.turn_player.name} is taking their turn. You will be updated on the round results soon.
 
 - if game.results.any?
-  ul
+  .card-view-box.result-view
     - game.previous_results.each do |result|
-      li = result.show
+      span = result.show
 
 - if current_player.id == game.turn_player.id
   a.btn.btn--primary.btn--center href="/take_turn" Take Turn
